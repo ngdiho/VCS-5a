@@ -20,6 +20,7 @@
 .list-group-flush .list-group-item {
   background-color: #4e73df!important;
   color: white;
+  width: 233px;
 }
 #sidebar-wrapper .list-group {
   width: 15rem;
@@ -38,6 +39,7 @@
     margin-left: 0;
     background-color: #4e73df !important;
     color: white;
+    width: 234px;
   }
 
   #page-content-wrapper {
