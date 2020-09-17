@@ -1,10 +1,16 @@
 <?php
-session_start();
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: /StudentManagement/public/views/Login.php");
-    exit;
+require_once '../../admin/controllers/UserController.php';
+require_once '../../admin/models/User.php';
+
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $userId = $_GET["userid"];
+    //echo $userId;
+    $controller = new UserController();
+    $rs = $controller->GetUserById($userId);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +69,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <h3 style="float: left;position: absolute;left: 30px;">List Users</h3>
+                            <h3 style="float: left;position: absolute;left: 30px;">Edit User</h3>
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -114,65 +120,49 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid">
-
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">USERS</h6>
+                    <form style="margin: 30px;" action="../controllers/EditUserController.php" method="POST">
+                        <input type="text" name="userid" value="<?php echo $rs->getUserID() ?>" hidden>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="fullname">Full Name</label>
+                                    <input name="fullname" value="<?php echo $rs->getFullName() ?>" type="text" class="form-control" id="fullname">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input name="email" value="<?php echo $rs->getEmail() ?>" type="email" class="form-control" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input name="phonenumber" value="<?php echo $rs->getPhoneNumber() ?>" type="text" class="form-control" id="phone">
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input name="isteacher" <?php echo $rs->getRole() == 2 ? 'checked' : '' ?> class="form-check-input" type="checkbox"> Is Teacher
+                                    </label>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>User name</th>
-                                                <th>Full name</th>
-                                                <th>Email </th>
-                                                <th>Phone number</th>
-                                                <th>Role</th>
-                                                <th>#</th>
-                                            </tr>
-                                        </thead>
-                                        <!-- <tfoot>
-                            <tr>
-                                <th>User name</th>
-                                <th>Full name</th>
-                                <th>Email </th>
-                                <th>Phone number</th>
-                                <th>#</th>
-                            </tr>
-                        </tfoot> -->
-                                        <tbody>
-                                            <?php
-
-                                            require_once '../../admin/controllers/UserController.php';
-                                            require_once '../../admin/models/User.php';
-
-                                            $controller = new UserController();
-                                            $userList = $controller->GetAllUsers();
-
-                                            foreach ($userList as $user) {
-                                                $role = $user->getRole() == 1 ? "Student" : "Teacher";
-                                                echo "<tr>
-                                                        <td>{$user->getUserName()}</td>
-                                                        <td>{$user->getFullName()}</td>
-                                                        <td>{$user->getEmail()}</td>
-                                                        <td>{$user->getPhoneNumber()}</td>
-                                                        <td>{$role}</td>
-                                                        <td><a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
-                                                        <a href='../controllers/DeleteController.php?userid={$user->getUserID()}'>delete</a>
-                                                    </tr>";
-                                            }
-
-                                            ?>
-                                        </tbody>
-                                    </table>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="username">User Name</label>
+                                    <input name="username" value="<?php echo $rs->getUserName() ?>" type="text" class="form-control" id="username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pwd">New Password</label>
+                                    <input name="password" type="password" class="form-control" id="pwd">
                                 </div>
                             </div>
                         </div>
-
-                    </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <?php
+                    // echo $rs->getUserName();
+                    // echo $rs->getPassword();
+                    // echo $rs->getFullName();
+                    // echo $rs->getPhoneNumber();
+                    // echo $rs->getEmail();
+                    // echo $rs->getRole();
+                    ?>
                     <!-- /.container-fluid -->
 
                 </div>

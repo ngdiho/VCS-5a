@@ -19,28 +19,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($password !== $repeatpassword) {
         session_start();
 
-        $_SESSION["register_error"] = REGISTER_REPEAT_PASSWORD_ERROR;
+        $_SESSION["message"] = REGISTER_REPEAT_PASSWORD_ERROR;
 
         header("location: /StudentManagement/public/views/Register.php");
-    }
-
-    $user = new User();
-    $user->setUserName($username);
-    $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
-    $user->setFullName($fullname);
-    $user->setPhoneNumber($phonenumber);
-    $user->setEmail($email);
-    $user->setRole($role);
-
-    // controller
-    $userController = new UserController();
-    $rs = $userController->Register($user);
-
-    if ($rs) {
-        session_start();
-
-        $_SESSION["message"] = REGISTER_SUCCESS;
-        header("location: /StudentManagement/public/views/Login.php");
     } else {
+        $user = new User();
+        $user->setUserName($username);
+        $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+        $user->setFullName($fullname);
+        $user->setPhoneNumber($phonenumber);
+        $user->setEmail($email);
+        $user->setRole($role);
+
+        // controller
+        $userController = new UserController();
+        $rs = $userController->Register($user);
+
+        if ($rs) {
+            session_start();
+
+            $_SESSION["message"] = REGISTER_SUCCESS;
+            header("location: /StudentManagement/public/views/Login.php");
+        } else {
+        }
     }
 }

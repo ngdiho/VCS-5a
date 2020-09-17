@@ -24,6 +24,7 @@ class UserController
         if ($rs->num_rows > 0) {
             while ($row = $rs->fetch_assoc()) {
                 $user = new User();
+                $user->setUserID($row["UserID"]);
                 $user->setUserName($row["UserName"]);
                 $user->setFullName($row["FullName"]);
                 $user->setEmail($row["Email"]);
@@ -95,5 +96,64 @@ class UserController
         }
 
         $this->link->close();
+    }
+
+    // Delete user
+    function DeleteUser($userId)
+    {
+        $sql = "DELETE FROM Users WHERE UserID={$userId}";
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+
+        $this->link->close();
+    }
+
+    // Get User
+    function GetUserById($userId)
+    {
+        $sql = "SELECT * FROM Users WHERE UserID={$userId}";
+
+        if ($stmt = mysqli_prepare($this->link, $sql)) {
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                // Store result
+                mysqli_stmt_store_result($stmt);
+
+                // Check if username exists, if yes then verify password
+                if (mysqli_stmt_num_rows($stmt) == 1) {
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt, $id, $username, $password, $fullname, $phonenumber, $email, $role);
+                    if (mysqli_stmt_fetch($stmt)) {
+                        $user = new User();
+                        $user->setUserID($id);
+                        $user->setUserName($username);
+                        $user->setPassword($password);
+                        $user->setFullName($fullname);
+                        $user->setPhoneNumber($phonenumber);
+                        $user->setEmail($email);
+                        $user->setRole($role);
+
+                        mysqli_stmt_close($stmt);
+
+                        return $user;
+                    }
+                } else {
+                    mysqli_stmt_close($stmt);
+                    return null;
+                }
+            } else {
+                mysqli_stmt_close($stmt);
+                return null;
+            }
+        }
+    }
+
+    // Update user
+    function UpdateUser(User $user){
+        
     }
 }

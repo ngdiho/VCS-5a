@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION["loggedin"])) {
-    header("location: /StudentManagement/public/views/Home.php");
+    header("location: /");
     exit;
 }
 

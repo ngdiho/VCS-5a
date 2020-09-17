@@ -1,20 +1,9 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title>REGISTER</title>
-    <!-- Custom fonts for this template-->
-    <link href="../lib/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="../css/css.css" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-primary">
@@ -34,9 +23,9 @@ and open the template in the editor.
 
                             <p class="text-danger"><?php
                                                     session_start();
-                                                    if (!empty($_SESSION["register_error"])) {
-                                                        echo $_SESSION["register_error"];
-                                                        unset($_SESSION["register_error"]);
+                                                    if (!empty($_SESSION["message"])) {
+                                                        echo $_SESSION["message"];
+                                                        unset($_SESSION["message"]);
                                                     }
                                                     ?></p>
 
@@ -73,7 +62,7 @@ and open the template in the editor.
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="Login.php">Already have an account? Login!</a>
+                                <a class="small" href="/login">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>
@@ -82,16 +71,6 @@ and open the template in the editor.
         </div>
 
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="../lib/jquery/jquery.min.js"></script>
-    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="../lib/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
 
 </body>
 
