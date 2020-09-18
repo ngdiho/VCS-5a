@@ -1,11 +1,16 @@
 <?php
-session_start();
-require_once("../config/routes.php");
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: " . ROUTE_LOGIN);
-    exit;
+require_once '../../admin/controllers/UserController.php';
+require_once '../../admin/models/User.php';
+
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $userId = $_SESSION["id"];
+    $controller = new UserController();
+    $rs = $controller->GetUserById($userId);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +28,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     <link href="../lib/fontawesome/css/all.css">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sidebar.css" rel="stylesheet">
-    <link href="../css/home.css" rel="stylesheet">
+    <link href="../css/detailuser.css" rel="stylesheet">
     <script defer src="../lib/fontawesome/js/all.js"></script>
     <!--load all styles -->
 </head>
@@ -65,7 +70,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <h3 style="float: left;position: absolute;left: 30px;">List Users</h3>
+                            <h3 style="float: left;position: absolute;left: 30px;">Detail User</h3>
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -116,64 +121,22 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid">
-
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">USERS</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img style="width: 100%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>User name</th>
-                                                <th>Full name</th>
-                                                <th>Email </th>
-                                                <th>Phone number</th>
-                                                <th>Role</th>
-                                                <th>#</th>
-                                            </tr>
-                                        </thead>
-                                        <!-- <tfoot>
-                            <tr>
-                                <th>User name</th>
-                                <th>Full name</th>
-                                <th>Email </th>
-                                <th>Phone number</th>
-                                <th>#</th>
-                            </tr>
-                        </tfoot> -->
-                                        <tbody>
-                                            <?php
-
-                                            require_once '../../admin/controllers/UserController.php';
-                                            require_once '../../admin/models/User.php';
-
-                                            $controller = new UserController();
-                                            $userList = $controller->GetAllUsers();
-
-                                            foreach ($userList as $user) {
-                                                $role = $user->getRole() == 1 ? "Student" : "Teacher";
-                                                echo "<tr>
-                                                        <td>{$user->getUserName()}</td>
-                                                        <td>{$user->getFullName()}</td>
-                                                        <td>{$user->getEmail()}</td>
-                                                        <td>{$user->getPhoneNumber()}</td>
-                                                        <td>{$role}</td>
-                                                        <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
-                                                        <a class='delete-user' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
-                                                    </tr>";
-                                            }
-
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="col">
+                                <blockquote>
+                                    <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">Gotham, United Kingdom <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                                </blockquote>
+                                <p>
+                                    <i class="fas fa-envelope-open-text"></i> <?php echo $rs->getEmail() ?>
+                                    <br /> <i class="fas fa-phone-square"></i> <?php echo $rs->getPhoneNumber() ?>
+                                </p>
+                                <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target="#changeProfileModal">Change profile</a>
                             </div>
                         </div>
-
                     </div>
                     <!-- /.container-fluid -->
 
@@ -206,24 +169,37 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         </div>
     </div>
 
-    <!-- Delete Modal-->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Change profile Modal-->
+    <div class="modal fade" id="changeProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <h4 class="modal-title" id="exampleModalLabel">Change profile <?php echo $rs->getFullName() ?></h4>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <p>Delete <span class="text-danger" id="delete-modal-fullname"></span>?</p>
-                    All action delete can not roll back!
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a id="delete-user-forward" class="btn btn-primary" href="#">Delete</a>
-                </div>
+                <form action="../controllers/ChangeProfileController.php" method="POST">
+                    <input type="text" name="userid" value="<?php echo $rs->getUserID() ?>" hidden>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">New password</label>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Leave it empty if do not want to change password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Email</label>
+                            <input type="email" name="email" value="<?php echo $rs->getEmail() ?>" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Phone number</label>
+                            <input type="text" name="phonenumber" value="<?php echo $rs->getPhoneNumber() ?>" class="form-control" id="exampleInputPassword1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

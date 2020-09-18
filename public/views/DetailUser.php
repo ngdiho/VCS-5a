@@ -44,10 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             </div>
             <div class="list-group list-group-flush">
                 <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List user</a>
-                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-plus-square"></i> Add new user</a>
+                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Add new user</a>
                 <a href="Messages.php" class="list-group-item list-group-item-action"><i class="fas fa-sms"></i> Messages</a>
-                
-                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Change profile</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -105,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="Profile.php">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>
@@ -126,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <img src="http://thetransformedmale.files.wordpress.com/2011/06/bruce-wayne-armani.jpg" alt="" class="img-rounded img-responsive" />
+                                <img style="width: 100%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
                             </div>
                             <div class="col">
                                 <blockquote>
@@ -138,10 +136,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </p>
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Send message</h6>
+                                        <span class="m-0 font-weight-bold text-primary">Send message</span>
+                                        <span class="text-success">
+                                            <?php
+                                            if (!empty($_SESSION["message"])) {
+                                                echo $_SESSION["message"];
+                                                unset($_SESSION["message"]);
+                                            }
+                                            ?>
+                                        </span>
                                     </div>
                                     <div class="card-body">
-                                        <form action="../controllers/SendMessage.php" method="POST">
+                                        <form action="../controllers/SendMessageController.php" method="POST">
+                                            <input type="text" name="receiveid" hidden value="<?php echo $rs->getUserID() ?>" />
                                             <div class="col">
                                                 <textarea name="message"></textarea>
                                             </div>
@@ -151,6 +158,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                         </form>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <span class="m-0 font-weight-bold text-primary">Messages sended to <?php echo $rs->getUserName() ?></span>
+                            </div>
+                            <div class="card-body">
+                                asdasda
                             </div>
                         </div>
                     </div>

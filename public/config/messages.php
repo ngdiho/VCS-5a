@@ -14,5 +14,8 @@ define("SERVER_ERROR", "Something 's wrong ...");
 // UPDATE USER CONFIG
 define("UPDATE_USER_FAILED", "Something 's wrong ...");
 
+// SEND MESSAGE
+define("SEND_SUCCESS", "message sent");
+
 
 

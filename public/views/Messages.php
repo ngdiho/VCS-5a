@@ -34,9 +34,8 @@ session_start();
             </div>
             <div class="list-group list-group-flush">
                 <a href="Home.php" class="list-group-item list-group-item-action"><i class="fas fa-list"></i> List user</a>
-                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-plus-square"></i> Add new user</a>
+                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Add new user</a>
                 <a href="Messages.php" class="list-group-item list-group-item-action sidebar-selected" ><i class="fas fa-sms"></i> Messages</a>
-                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Change profile</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -94,7 +93,7 @@ session_start();
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="Profile.php">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>

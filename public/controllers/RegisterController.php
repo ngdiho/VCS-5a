@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["message"] = REGISTER_REPEAT_PASSWORD_ERROR;
 
-        header("location: /StudentManagement/public/views/AddUser.php");
+        header("location: ".ROUTE_ADD_USER);
     } else {
         $user = new User();
         $user->setUserName($username);

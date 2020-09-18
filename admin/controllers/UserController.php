@@ -93,8 +93,6 @@ class UserController
         } else {
             return false;
         }
-
-        $this->link->close();
     }
 
     // Delete user
@@ -156,6 +154,22 @@ class UserController
             $sql = "UPDATE Users SET UserName='{$user->getUserName()}', FullName='{$user->getFullName()}', Email='{$user->getEmail()}', PhoneNumber='{$user->getPhoneNumber()}', Role='{$user->getRole()}' WHERE UserID={$user->getUserID()}";
         } else {
             $sql = "UPDATE Users SET UserName='{$user->getUserName()}', Password='{$user->getPassword()}', FullName='{$user->getFullName()}', Email='{$user->getEmail()}', PhoneNumber='{$user->getPhoneNumber()}', Role='{$user->getRole()}' WHERE UserID={$user->getUserID()}";
+        }
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Change profile
+    function ChangeProfile($userid, $password, $email, $phonenumber)
+    {
+        if ($password == "") {
+            $sql = "UPDATE Users SET Email='{$email}', PhoneNumber='{$phonenumber}' WHERE UserID={$userid}";
+        } else {
+            $sql = "UPDATE Users SET Password='{$password}', Email='{$email}', PhoneNumber='{$phonenumber}' WHERE UserID={$userid}";
         }
 
         if ($this->link->query($sql) === TRUE) {

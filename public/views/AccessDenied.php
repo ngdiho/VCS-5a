@@ -1,13 +1,8 @@
 <?php
+
 session_start();
-require_once("../config/routes.php");
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: " . ROUTE_LOGIN);
-    exit;
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -116,65 +111,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid">
-
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">USERS</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>User name</th>
-                                                <th>Full name</th>
-                                                <th>Email </th>
-                                                <th>Phone number</th>
-                                                <th>Role</th>
-                                                <th>#</th>
-                                            </tr>
-                                        </thead>
-                                        <!-- <tfoot>
-                            <tr>
-                                <th>User name</th>
-                                <th>Full name</th>
-                                <th>Email </th>
-                                <th>Phone number</th>
-                                <th>#</th>
-                            </tr>
-                        </tfoot> -->
-                                        <tbody>
-                                            <?php
-
-                                            require_once '../../admin/controllers/UserController.php';
-                                            require_once '../../admin/models/User.php';
-
-                                            $controller = new UserController();
-                                            $userList = $controller->GetAllUsers();
-
-                                            foreach ($userList as $user) {
-                                                $role = $user->getRole() == 1 ? "Student" : "Teacher";
-                                                echo "<tr>
-                                                        <td>{$user->getUserName()}</td>
-                                                        <td>{$user->getFullName()}</td>
-                                                        <td>{$user->getEmail()}</td>
-                                                        <td>{$user->getPhoneNumber()}</td>
-                                                        <td>{$role}</td>
-                                                        <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
-                                                        <a class='delete-user' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
-                                                    </tr>";
-                                            }
-
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    
                     <!-- /.container-fluid -->
 
                 </div>
