@@ -1,6 +1,7 @@
 <?php
 
-require_once '../../config/config.php';
+require_once '../config/messages.php';
+require_once "../config/routes.php";
 require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
 
@@ -29,8 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rs = $userController->UpdateUser($user);
 
     if ($rs) {
-        header("location: /StudentManagement/public/views/Home.php");
+        header("location: ".ROUTE_HOME);
     } else {
-        
+        $_SESSION["message"] = UPDATE_USER_FAILED;
+
+        header("location: ".ROUTE_EDIT_USER."?userid={$userid}");
     }
 }

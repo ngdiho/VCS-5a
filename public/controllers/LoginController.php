@@ -1,6 +1,7 @@
 <!-- PHP -->
 <?php
-require_once '../../config/config.php';
+require_once '../config/messages.php';
+require_once "../config/routes.php";
 require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
 ?>
@@ -38,17 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($rs instanceof User) {
             session_start();
 
-            $_SESSION["loggedin"] = true;
             $_SESSION["id"] = $rs->getUserID();
+            $_SESSION["loggedin"] = true;
             $_SESSION["fullname"] = $rs->getFullName();
 
-            header("location: /StudentManagement/public/views/Home.php");
+            header("location: ".ROUTE_HOME);
         } else {
             session_start();
 
             $_SESSION["message"] = LOGIN_FAILED_NOTFOUND;
 
-            header("location: /StudentManagement/public/views/Login.php");
+            header("location: ".ROUTE_LOGIN);
         }
     }
 }

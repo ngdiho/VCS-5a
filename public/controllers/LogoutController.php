@@ -1,7 +1,9 @@
 <?php
+require_once "../config/routes.php";
 
 session_start();
+unset($_SESSION["id"]);
 unset($_SESSION["loggedin"]);
-unset($_SESSION["username"]);
+unset($_SESSION["fullname"]);
 
-header("location: /StudentManagement/public/views/Home.php");
+header("location: ".ROUTE_HOME);

@@ -1,6 +1,7 @@
 <?php
 
-require_once '../../config/config.php';
+require_once '../config/messages.php';
+require_once "../config/routes.php";
 require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
 
@@ -21,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["message"] = REGISTER_REPEAT_PASSWORD_ERROR;
 
-        header("location: /StudentManagement/public/views/Register.php");
+        header("location: /StudentManagement/public/views/AddUser.php");
     } else {
         $user = new User();
         $user->setUserName($username);
@@ -36,11 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rs = $userController->Register($user);
 
         if ($rs) {
+            header("location: ".ROUTE_HOME);
+        } else {
             session_start();
 
-            $_SESSION["message"] = REGISTER_SUCCESS;
-            header("location: /StudentManagement/public/views/Login.php");
-        } else {
+            $_SESSION["message"] = SERVER_ERROR;
+
+            header("location: ".ROUTE_ADD_USER);
         }
     }
 }

@@ -11,4 +11,8 @@ define("REGISTER_SUCCESS","Registation success!");
 // SERVER CONFIG
 define("SERVER_ERROR", "Something 's wrong ...");
 
+// UPDATE USER CONFIG
+define("UPDATE_USER_FAILED", "Something 's wrong ...");
+
+
 

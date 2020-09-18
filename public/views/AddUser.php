@@ -1,18 +1,6 @@
 <?php
-
-require_once '../../admin/controllers/UserController.php';
-require_once '../../admin/models/User.php';
-
-session_start();
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $userId = $_GET["userid"];
-    //echo $userId;
-    $controller = new UserController();
-    $rs = $controller->GetUserById($userId);
-}
-
+    session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 <a href="Home.php"><i class="fas fa-home"></i> Class Management </a>
             </div>
             <div class="list-group list-group-flush">
-                <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List User</a>
-                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-plus-square"></i> Add new user</a>
+                <a href="Home.php" class="list-group-item list-group-item-action"><i class="fas fa-list"></i> List User</a>
+                <a href="AddUser.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-plus-square"></i> Add new user</a>
                 <a href="Messages.php" class="list-group-item list-group-item-action"><i class="fas fa-sms"></i> Messages</a>
                 <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Change profile</a>
             </div>
@@ -71,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <h3 style="float: left;position: absolute;left: 30px;">Edit User</h3>
+                            <h3 style="float: left;position: absolute;left: 30px;">Add User</h3>
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,9 +86,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php
-                                                                                                echo $_SESSION["fullname"];
-                                                                                                ?></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        <?php
+                                        echo $_SESSION["fullname"];
+                                        ?>
+                                    </span>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -132,40 +122,43 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         ?>
                     </p>
 
-                    <form style="margin: 30px;" action="../controllers/EditUserController.php" method="POST">
-                        <input type="text" name="userid" value="<?php echo $rs->getUserID() ?>" hidden>
+                    <form style="margin: 30px;" action="../controllers/RegisterController.php" method="POST">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="fullname">Full Name</label>
-                                    <input name="fullname" value="<?php echo $rs->getFullName() ?>" type="text" class="form-control" id="fullname" required>
+                                    <input name="fullname" type="text" class="form-control" id="fullname" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input name="email" value="<?php echo $rs->getEmail() ?>" type="email" class="form-control" id="email" required>
+                                    <input name="email" type="email" class="form-control" id="email" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
-                                    <input name="phonenumber" value="<?php echo $rs->getPhoneNumber() ?>" type="text" class="form-control" id="phone" required>
+                                    <input name="phonenumber" type="text" class="form-control" id="phone" required>
                                 </div>
                                 <div class="form-group form-check">
                                     <label class="form-check-label">
-                                        <input name="isteacher" <?php echo $rs->getRole() == 2 ? 'checked' : '' ?> class="form-check-input" type="checkbox"> Is Teacher
+                                        <input name="isteacher" class="form-check-input" type="checkbox"> Is Teacher
                                     </label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="username">User Name</label>
-                                    <input name="username" value="<?php echo $rs->getUserName() ?>" type="text" class="form-control" id="username" required>
+                                    <input name="username" type="text" class="form-control" id="username" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pwd">New Password (leave it empty if do not want to set new password)</label>
-                                    <input name="password" type="password" class="form-control" id="pwd">
+                                    <label for="pwd"> Password</label>
+                                    <input name="password" type="password" class="form-control" id="pwd" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pwd">Repeat Password</label>
+                                    <input name="repeatpassword" type="password" class="form-control" id="pwd" required>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary">Create User</button>
                     </form>
                     <!-- /.container-fluid -->
 

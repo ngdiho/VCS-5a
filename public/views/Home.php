@@ -1,8 +1,9 @@
 <?php
 session_start();
+require_once("../config/routes.php");
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("location: /StudentManagement/public/views/Login.php");
+    header("location: ".ROUTE_LOGIN);
     exit;
 }
 ?>
@@ -37,7 +38,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <a href="Home.php"><i class="fas fa-home"></i> Class Management </a>
             </div>
             <div class="list-group list-group-flush">
-                <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List User</a>
+                <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List user</a>
+                <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-plus-square"></i> Add new user</a>
+                <a href="Messages.php" class="list-group-item list-group-item-action"><i class="fas fa-sms"></i> Messages</a>
                 <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Change profile</a>
             </div>
         </div>
@@ -160,8 +163,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                         <td>{$user->getEmail()}</td>
                                                         <td>{$user->getPhoneNumber()}</td>
                                                         <td>{$role}</td>
-                                                        <td><a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
-                                                        <a href='../controllers/DeleteController.php?userid={$user->getUserID()}'>delete</a>
+                                                        <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
+                                                        <a class='delete-user' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
                                                     </tr>";
                                             }
 
@@ -204,9 +207,32 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         </div>
     </div>
 
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Delete <span class="text-danger" id="delete-modal-fullname"></span>?</p>
+                    All action delete can not roll back!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="delete-user-forward" class="btn btn-primary" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="../lib/jquery/jquery-3.5.1.min.js"></script>
     <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/home.js"></script>
 
 </body>
 

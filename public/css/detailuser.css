@@ -1,0 +1,9 @@
+textarea[name="message"] {
+  width: 100%;
+  height: 250px;
+  border-radius: 5px;
+  border-color: gray;
+  outline: none;
+  resize: none;
+}
+

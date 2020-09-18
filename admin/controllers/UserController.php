@@ -1,6 +1,5 @@
 <?php
 
-require_once '../../config/config.php';
 require_once '../../admin/dbconnect/dbconnection.php';
 require_once '../../admin/models/User.php';
 
@@ -108,8 +107,6 @@ class UserController
         } else {
             return false;
         }
-
-        $this->link->close();
     }
 
     // Get User
@@ -153,7 +150,18 @@ class UserController
     }
 
     // Update user
-    function UpdateUser(User $user){
-        
+    function UpdateUser(User $user)
+    {
+        if ($user->getPassword() == "") {
+            $sql = "UPDATE Users SET UserName='{$user->getUserName()}', FullName='{$user->getFullName()}', Email='{$user->getEmail()}', PhoneNumber='{$user->getPhoneNumber()}', Role='{$user->getRole()}' WHERE UserID={$user->getUserID()}";
+        } else {
+            $sql = "UPDATE Users SET UserName='{$user->getUserName()}', Password='{$user->getPassword()}', FullName='{$user->getFullName()}', Email='{$user->getEmail()}', PhoneNumber='{$user->getPhoneNumber()}', Role='{$user->getRole()}' WHERE UserID={$user->getUserID()}";
+        }
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

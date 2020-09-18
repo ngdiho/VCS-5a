@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <link href="../lib/fontawesome/css/all.css">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sidebar.css" rel="stylesheet">
-    <link href="../css/home.css" rel="stylesheet">
+    <link href="../css/detailuser.css" rel="stylesheet">
     <script defer src="../lib/fontawesome/js/all.js"></script>
     <!--load all styles -->
 </head>
@@ -43,9 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 <a href="Home.php"><i class="fas fa-home"></i> Class Management </a>
             </div>
             <div class="list-group list-group-flush">
-                <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List User</a>
+                <a href="Home.php" class="list-group-item list-group-item-action sidebar-selected"><i class="fas fa-list"></i> List user</a>
                 <a href="AddUser.php" class="list-group-item list-group-item-action"><i class="fas fa-plus-square"></i> Add new user</a>
                 <a href="Messages.php" class="list-group-item list-group-item-action"><i class="fas fa-sms"></i> Messages</a>
+                
                 <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-id-card"></i> Change profile</a>
             </div>
         </div>
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <h3 style="float: left;position: absolute;left: 30px;">Edit User</h3>
+                            <h3 style="float: left;position: absolute;left: 30px;">Detail User</h3>
                             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                             <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,51 +123,37 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
-
-                    <p class="text-danger">
-                        <?php
-                        if (!empty($_SESSION["message"])) {
-                            echo $_SESSION["message"];
-                            unset($_SESSION["message"]);
-                        }
-                        ?>
-                    </p>
-
-                    <form style="margin: 30px;" action="../controllers/EditUserController.php" method="POST">
-                        <input type="text" name="userid" value="<?php echo $rs->getUserID() ?>" hidden>
+                    <div class="container">
                         <div class="row">
                             <div class="col">
-                                <div class="form-group">
-                                    <label for="fullname">Full Name</label>
-                                    <input name="fullname" value="<?php echo $rs->getFullName() ?>" type="text" class="form-control" id="fullname" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input name="email" value="<?php echo $rs->getEmail() ?>" type="email" class="form-control" id="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input name="phonenumber" value="<?php echo $rs->getPhoneNumber() ?>" type="text" class="form-control" id="phone" required>
-                                </div>
-                                <div class="form-group form-check">
-                                    <label class="form-check-label">
-                                        <input name="isteacher" <?php echo $rs->getRole() == 2 ? 'checked' : '' ?> class="form-check-input" type="checkbox"> Is Teacher
-                                    </label>
-                                </div>
+                                <img src="http://thetransformedmale.files.wordpress.com/2011/06/bruce-wayne-armani.jpg" alt="" class="img-rounded img-responsive" />
                             </div>
                             <div class="col">
-                                <div class="form-group">
-                                    <label for="username">User Name</label>
-                                    <input name="username" value="<?php echo $rs->getUserName() ?>" type="text" class="form-control" id="username" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="pwd">New Password (leave it empty if do not want to set new password)</label>
-                                    <input name="password" type="password" class="form-control" id="pwd">
+                                <blockquote>
+                                    <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">Gotham, United Kingdom <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                                </blockquote>
+                                <p>
+                                    <i class="fas fa-envelope-open-text"></i> <?php echo $rs->getEmail() ?>
+                                    <br /> <i class="fas fa-phone-square"></i> <?php echo $rs->getPhoneNumber() ?>
+                                </p>
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Send message</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="../controllers/SendMessage.php" method="POST">
+                                            <div class="col">
+                                                <textarea name="message"></textarea>
+                                            </div>
+                                            <div class="col">
+                                                <button style="float: right;" class="btn btn-primary" type="submit">Send</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
+                    </div>
                     <!-- /.container-fluid -->
 
                 </div>
@@ -198,9 +185,32 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         </div>
     </div>
 
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Delete <span class="text-danger" id="delete-modal-fullname"></span>?</p>
+                    All action delete can not roll back!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="delete-user-forward" class="btn btn-primary" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="../lib/jquery/jquery-3.5.1.min.js"></script>
     <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/home.js"></script>
 
 </body>
 

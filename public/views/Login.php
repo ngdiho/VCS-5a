@@ -1,8 +1,9 @@
 <?php
 session_start();
+require_once "../config/routes.php";
 
 if (isset($_SESSION["loggedin"])) {
-    header("location: /");
+    header("location: ".ROUTE_HOME);
     exit;
 }
 
