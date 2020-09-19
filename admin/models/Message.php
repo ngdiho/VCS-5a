@@ -4,10 +4,16 @@ class Message
 {
     private $MessageID;
     private $Content;
+    private $CreateDate;
     private $SendID;
+    private $SendName;
     private $ReceiveID;
     private $Seen;
 
+    function getSendName()
+    {
+        return $this->SendName;
+    }
     function getMessageID()
     {
         return $this->MessageID;
@@ -15,6 +21,10 @@ class Message
     function getContent()
     {
         return $this->Content;
+    }
+    function getCreateDate()
+    {
+        return $this->CreateDate;
     }
     function getSendID()
     {
@@ -29,6 +39,10 @@ class Message
         return $this->Seen;
     }
 
+    function setSendName($SendName): void
+    {
+        $this->SendName = $SendName;
+    }
     function setMessageID($MessageID): void
     {
         $this->MessageID = $MessageID;
@@ -36,6 +50,10 @@ class Message
     function setContent($Content): void
     {
         $this->Content = $Content;
+    }
+    function setCreateDate($CreateDate): void
+    {
+        $this->CreateDate = $CreateDate;
     }
     function setSendID($SendID): void
     {

@@ -9,7 +9,8 @@ class UserController
 
     function __construct()
     {
-        $this->link = InitConnect();
+        $dbconnect = new DBConnect();
+        $this->link = $dbconnect->InitConnect();
     }
 
     // Get all users
@@ -64,6 +65,7 @@ class UserController
                             $userLogin->setUserID($id);
                             $userLogin->setFullName($fullname);
                             $userLogin->setUserName($username);
+                            $userLogin->setRole($role);
                             // Close statement
                             mysqli_stmt_close($stmt);
                             return $userLogin;

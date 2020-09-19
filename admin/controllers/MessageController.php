@@ -1,8 +1,7 @@
 <?php
+
 require_once '../../admin/dbconnect/dbconnection.php';
 require_once '../../admin/models/Message.php';
-
-session_start();
 
 class MessageController
 {
@@ -10,7 +9,8 @@ class MessageController
 
     function __construct()
     {
-        $this->link = InitConnect();
+        $dbconnect = new DBConnect();
+        $this->link = $dbconnect->InitConnect();
     }
 
     function SendMessage($content, $createdate, $sendid, $receiveid)
@@ -23,5 +23,51 @@ class MessageController
         } else {
             return false;
         }
+    }
+
+    function GetSentMessages($sendid, $receiveid)
+    {
+        $messageList = [];
+        $sql = "SELECT * FROM Messages WHERE SendID={$sendid} AND ReceiveID={$receiveid} ORDER BY CreateDate DESC";
+
+        $rs = $this->link->query($sql);
+
+        if ($rs->num_rows > 0) {
+            while ($row = $rs->fetch_assoc()) {
+                $mess = new Message();
+                $mess->setMessageID($row["MessageID"]);
+                $mess->setContent($row["Content"]);
+                $mess->setCreateDate($row["CreateDate"]);
+                $mess->setSeen($row["Seen"]);
+
+                array_push($messageList, $mess);
+            }
+        }
+
+        return $messageList;
+    }
+
+    function GetReceiveMessages($receiveid)
+    {
+        // SELECT MessageID, Content, Users.FullName, Seen FROM Messages,Users WHERE Messages.SendID = Users.UserID AND Messages.ReceiveID = 12
+        $messageList = [];
+        $sql = "SELECT MessageID, Content, CreateDate,Users.FullName, Seen FROM Messages,Users WHERE Messages.SendID = Users.UserID AND Messages.ReceiveID = {$receiveid} ORDER BY CreateDate DESC";
+
+        $rs = $this->link->query($sql);
+
+        if ($rs->num_rows > 0) {
+            while ($row = $rs->fetch_assoc()) {
+                $mess = new Message();
+                $mess->setMessageID($row["MessageID"]);
+                $mess->setContent($row["Content"]);
+                $mess->setCreateDate($row["CreateDate"]);
+                $mess->setSendName($row["FullName"]);
+                $mess->setSeen($row["Seen"]);
+
+                array_push($messageList, $mess);
+            }
+        }
+
+        return $messageList;
     }
 }

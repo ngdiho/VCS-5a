@@ -5,6 +5,8 @@ require_once "../config/routes.php";
 require_once '../../admin/controllers/MessageController.php';
 require_once '../../admin/models/Message.php';
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $message = trim($_POST["message"]);

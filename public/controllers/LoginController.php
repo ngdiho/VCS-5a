@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["id"] = $rs->getUserID();
             $_SESSION["loggedin"] = true;
             $_SESSION["fullname"] = $rs->getFullName();
+            $_SESSION["role"] = $rs->getRole();
 
             header("location: ".ROUTE_HOME);
         } else {
