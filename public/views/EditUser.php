@@ -104,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="Home.php">Back to list</a>
                     </form>
                     <!-- /.container-fluid -->
 

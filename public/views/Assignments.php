@@ -1,5 +1,12 @@
 <?php
+require_once '../../admin/controllers/AssignmentController.php';
+require_once '../../admin/models/Assignment.php';
+
 session_start();
+
+$controller = new AssignmentController();
+$assignList = $controller->GetAllAssignments();
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +24,6 @@ session_start();
     <link href="../lib/fontawesome/css/all.css">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sidebar.css" rel="stylesheet">
-    <link href="../css/home.css" rel="stylesheet">
     <link href="../css/assignments.css" rel="stylesheet">
     <script defer src="../lib/fontawesome/js/all.js"></script>
     <!--load all styles -->
@@ -45,34 +51,41 @@ session_start();
 
                     <!-- Begin Page Content -->
                     <div class="container">
-                        <div>
-                            <a class="btn btn-btn-primary" href="#">Assignments</a>
-                        </div>
-                        <hr />
-                        <a href="AddAssignment.php" class="btn btn-primary">New assignment</a><br />
-                        <br />
-                        <div>
-                            <ul class="list-group">
-                                <li class='list-group-item' style="background-color: #007bff;color: white;">
-                                    <div class="row">
-                                        <div class='col-3'>Due to</div>
-                                        <div class='col-sm-6'>Description</div>
-                                        <div class='col-3'>#</div>
-                                    </div>
-                                </li>
-                                <li class='list-group-item'>
-                                    <div class="row">
-                                        <div class='col-3'>12:20</div>
-                                        <div class='col-sm-6'>bai tap toan</div>
-                                        <div class='col-3'>
-                                            <a class="btn btn-primary" href="#">Detail</a>
-                                            <a class="btn btn-danger" href="#">Delete</a>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <span class="m-0 font-weight-bold text-primary">List Assignments</span>
+                            </div>
+                            <div class="card-body">
+                                <a href="AddAssignment.php" class="btn btn-primary">New assignment</a><br/></br/>
+                                <ul class="list-group">
+                                    <li class='list-group-item' style="background-color: #007bff;color: white;">
+                                        <div class="row">
+                                            <div class='col-3'>Due to</div>
+                                            <div class='col-sm-6'>Description</div>
+                                            <div class='col-3'>#</div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <?php
+
+                                    foreach ($assignList as $assign) {
+                                        echo "<li class='list-group-item'>
+                                                <div class='row'>
+                                                    <div class='col-3'>{$assign->getDueTo()}</div>
+                                                    <div class='col-sm-6'>{$assign->getDescription()}</div>
+                                                    <div class='col-3'>
+                                                        <a class='btn btn-primary' href='DetailAssignment.php?assignid={$assign->getAssignmentID()}'>Detail</a>
+                                                        <a class='btn btn-danger' href='#'>Delete</a>
+                                                    </div>
+                                                </div>
+                                            </li>";
+                                    }
+
+                                    ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
                     <!-- /.container-fluid -->
 
                 </div>
