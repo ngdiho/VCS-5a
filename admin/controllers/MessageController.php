@@ -37,7 +37,7 @@ class MessageController
                 $mess = new Message();
                 $mess->setMessageID($row["MessageID"]);
                 $mess->setContent($row["Content"]);
-                $mess->setCreateDate($row["CreateDate"]);
+                $mess->setCreateDate(date("H:i  d-m-Y", strtotime($row["CreateDate"])));
                 $mess->setSeen($row["Seen"]);
 
                 array_push($messageList, $mess);
@@ -60,7 +60,8 @@ class MessageController
                 $mess = new Message();
                 $mess->setMessageID($row["MessageID"]);
                 $mess->setContent($row["Content"]);
-                $mess->setCreateDate($row["CreateDate"]);
+                // $mess->setCreateDate($row["CreateDate"]);
+                $mess->setCreateDate(date("H:i  d-m-Y", strtotime($row["CreateDate"])));
                 $mess->setSendName($row["FullName"]);
                 $mess->setSeen($row["Seen"]);
 
@@ -69,5 +70,29 @@ class MessageController
         }
 
         return $messageList;
+    }
+
+    // Delete message
+    function DeleteMessage($messageId)
+    {
+        $sql = "DELETE FROM Messages WHERE MessageID={$messageId}";
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Update message
+    function UpdateMessage($messid, $newmessage)
+    {
+        $sql = "UPDATE Messages SET Content='{$newmessage}' WHERE MessageID={$messid}";
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

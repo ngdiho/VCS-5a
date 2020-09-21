@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <img style="width: 100%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
+                                <img style="width: 91%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
                             </div>
                             <div class="col">
                                 <blockquote>
@@ -99,15 +99,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="container">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">Messages sent to <?php echo $rs->getUserName() ?></span>
+                                <span class="m-0 font-weight-bold text-primary">Messages sent to <?php echo $rs->getFullName() ?></span>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <li class='list-group-item' style="color: white; background-color: #438ffc">
+                                    <li class='list-group-item' style="color: white; background-color: #007bff">
                                         <div class='row'>
                                             <div class='col-3'>Time</div>
                                             <div class='col-sm-7'>Content</div>
-                                            <div class='col-2'>From</div>
+                                            <div class="col-2" style="text-align: center">#</div>
                                         </div>
                                     </li>
                                     <?php
@@ -118,10 +118,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                         echo "<li class='list-group-item'>
                                                 <div class='row'>
                                                     <div class='col-3'>{$mess->getCreateDate()}</div>
-                                                    <div class='col-sm-7'>{$mess->getContent()}</div>
+                                                    <div messid='{$mess->getMessageID()}' class='col-sm-7'>{$mess->getContent()}</div>
                                                     <div class='col-2'>
-                                                        <a class='btn btn-danger'><i class='fas fa-trash-alt'></i></a>
-                                                        <a class='btn btn-primary'><i class='fas fa-pencil-alt'></i></a>
+                                                        <a messid='{$mess->getMessageID()}' userid='{$userId}' data-toggle='modal' data-target='#deleteMessModal' href='#' class='btn btn-danger delete-mess'><i class='fas fa-trash-alt'></i></a>
+                                                        <a class='btn btn-primary edit-mess' messid='{$mess->getMessageID()}' content='{$mess->getContent()}' data-toggle='modal' data-target='#editMessModal' href='#'><i class='fas fa-pencil-alt'></i></a>
                                                     </div>
                                                 </div>
                                             </li>";
@@ -163,10 +163,61 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         </div>
     </div>
 
+    <!-- Delete Message Modal-->
+    <div class="modal fade" id="deleteMessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    All deleted messages can not be rolled back!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="delete-mess-forward" class="btn btn-danger" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Message Modal-->
+    <div class="modal fade" id="editMessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit message</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="../controllers/EditMessageController.php" method="POST">
+                    <input type="text" name="userid" value="<?php echo $userId ?>" hidden />
+                    <input type="text" name="messid" hidden />
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Message</label>
+                            <textarea name="newmessage" class="form-control" id="exampleInputPassword1"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="../lib/jquery/jquery-3.5.1.min.js"></script>
     <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/sidebar.js"></script>
+    <script src="../js/detailuser.js"></script>
 
 </body>
 
