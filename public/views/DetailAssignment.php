@@ -9,7 +9,6 @@ $assignId = $_GET["assignid"];
 
 $controller = new AssignmentController();
 $assign = $controller->GetAssignmentById($assignId);
-$fileName = substr($assign->getFilePath(), strrpos($assign->getFilePath(), "/") + 1)
 
 ?>
 
@@ -60,13 +59,19 @@ $fileName = substr($assign->getFilePath(), strrpos($assign->getFilePath(), "/") 
                                 <span class="m-0 font-weight-bold text-primary">Assignment [ <?php echo $assign->getDescription() ?> ]</span>
                             </div>
                             <div class="card-body">
-                                <span>File: <?php echo "<a href='#'>" . $fileName . "</a>" ?></span>
-                                
+                                <span>File: <?php echo "<a href='" . $assign->getFilePath() . "' download='" . $assign->getFileName() . "'>" . $assign->getFileName() . "</a>" ?></span>
+                                <span style="float: right;" class="text-danger">Due to: <?php echo $assign->getDueTo() ?></span>
                                 <?php
                                 if ($_SESSION["role"] == 2) {
-                                    echo "<div style='display:inline-table;'>
-                                            <a href='#' data-toggle='modal' data-target='#changeFileModal' class='btn btn-primary' style='display:inline-table;float: inherit;position: absolute;right: 20px;'>Change file</a><br /></br />
-                                        </div><br/>
+                                    require_once '../../admin/controllers/ReportController.php';
+                                    require_once '../../admin/models/Report.php';
+
+                                    $controller = new ReportController();
+                                    $list = $controller->GetAllReports($assignId);
+
+                                    echo "<div>
+                                            <a href='#' data-toggle='modal' data-target='#changeFileModal' class='btn btn-primary'>Change file</a><br /></br />
+                                        </div>
                                         <ul class='list-group'>
                                             <li class='list-group-item' style='background-color: #007bff;color: white;'>
                                                 <div class='row'>
@@ -74,21 +79,46 @@ $fileName = substr($assign->getFilePath(), strrpos($assign->getFilePath(), "/") 
                                                     <div class='col-sm-6'>File</div>
                                                     <div class='col-3'>Student</div>
                                                 </div>
-                                            </li>
-                                        </ul>";
+                                            </li>";
 
-                                } else {
-                                    echo "<br/><br/>
-                                    <form>
-                                        <div class='form-group'>
-                                            <label for='customFile'>Turn in</label>
-                                            <div class='custom-file'>
-                                                <input type='file' name='file' class='custom-file-input' id='customFile' required>
-                                                <label class='custom-file-label' for='customFile'>Choose file</label>
+                                    foreach ($list as $rp) {
+                                        echo "<li class='list-group-item'>
+                                            <div class='row'>
+                                                <div class='col-3'>{$rp->getCreateDate()}</div>
+                                                <div class='col-sm-6'><a href='{$rp->getFilePath()}' download>{$rp->getFileName()}</a></div>
+                                                <div class='col-3'>{$rp->getStudentName()}</div>
                                             </div>
-                                        </div>
-                                        <button class='btn btn-primary' type='submit'>Turn in</button>
-                                    </form>";
+                                        </li>";
+                                    }
+
+                                    echo "</ul>";
+                                } else {
+                                    require_once '../../admin/controllers/ReportController.php';
+                                    require_once '../../admin/models/Report.php';
+
+                                    $controller = new ReportController();
+                                    $report = $controller->GetReportOfStudent($assignId, $_SESSION["id"]);
+
+                                    if ($report instanceof Report) {
+                                        echo "<p>
+                                                Turned-in file: <a href='" . $report->getFilePath() . "' download='" . $report->getFileName() . "'>" . $report->getFileName() . "</a>
+                                                <span style='float: right;' class='text-success'><i class='fas fa-clipboard-check'></i> Turned in </span><br><br>
+                                                <a href='#' data-toggle='modal' data-target='#changeTurnInModal' class='btn btn-primary'>Change turn-in file</a>
+                                            </p>";
+                                    } else {
+                                        echo "<br/><br/>
+                                        <form action='../controllers/TurnInController.php' method='POST' enctype='multipart/form-data'>
+                                            <input type='text' value='{$assignId}' name='assignid' hidden/>
+                                            <div class='form-group'>
+                                                <label for='customFile'>Turn in</label>
+                                                <div class='custom-file'>
+                                                    <input type='file' name='file' class='custom-file-input' id='customFile' required>
+                                                    <label class='custom-file-label' for='customFile'>Choose file</label>
+                                                </div>
+                                            </div>
+                                            <button class='btn btn-primary' type='submit'>Turn in</button>
+                                        </form>";
+                                    }
                                 }
 
                                 ?>
@@ -128,14 +158,40 @@ $fileName = substr($assign->getFilePath(), strrpos($assign->getFilePath(), "/") 
         </div>
     </div>
 
-    <!-- change file Modal-->
+    <!-- change assignment Modal-->
     <div class="modal fade" id="changeFileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form>
+                <form action="../controllers/ChangeAssignmentController.php" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden/>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="customFile">File</label>
+                            <label for="customFile">New File</label>
+                            <div class="custom-file">
+                                <input type="file" name="file" class="custom-file-input" id="customFile" required>
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" href="#">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- change submit file Modal-->
+    <div class="modal fade" id="changeTurnInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="../controllers/ChangeReportController.php" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="reportid" value="<?php echo $report->getReportID() ?>" hidden/>
+                    <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden/>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="customFile">New File</label>
                             <div class="custom-file">
                                 <input type="file" name="file" class="custom-file-input" id="customFile" required>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
@@ -155,6 +211,7 @@ $fileName = substr($assign->getFilePath(), strrpos($assign->getFilePath(), "/") 
     <script src="../lib/jquery/jquery-3.5.1.min.js"></script>
     <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/sidebar.js"></script>
+    <script src="../js/detailassignment.js"></script>
 
 </body>
 

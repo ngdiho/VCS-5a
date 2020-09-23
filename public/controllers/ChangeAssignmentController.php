@@ -30,15 +30,15 @@ if ($_SESSION["role"] == 1) {
         // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            $description = trim($_POST["description"]);
-            $dueto = trim($_POST["dueto"]);
+            $assignid = trim($_POST["assignid"]);
 
             $assignmentController = new AssignmentController();
-            $rs = $assignmentController->AddAssignment($description, $filePath, $dueto, $fileName);
+            $rs = $assignmentController->ChangeAssignment($assignid, $filePath, $fileName);
 
             if ($rs) {
-                header("location: " . ROUTE_ASSIGNMENTS);
+                header("location: " . ROUTE_DETAIL_ASSIGNMENT."?assignid=".$assignid);
             } else {
+                
             }
         } else {
             echo "Sorry, there was an error uploading your file.";

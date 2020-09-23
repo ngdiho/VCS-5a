@@ -13,10 +13,10 @@ class AssignmentController
         $this->link = $dbconnect->InitConnect();
     }
 
-    function AddAssignment($description, $filepath, $dueto)
+    function AddAssignment($description, $filepath, $dueto, $filename)
     {
-        $sql = "INSERT INTO Assignments (Description, FilePath, DueTo) 
-            VALUES ('{$description}', '{$filepath}', '{$dueto}')";
+        $sql = "INSERT INTO Assignments (Description, FilePath, DueTo, FileName) 
+            VALUES ('{$description}', '{$filepath}', '{$dueto}', '{$filename}')";
 
         if ($this->link->query($sql) === TRUE) {
             return true;
@@ -60,10 +60,32 @@ class AssignmentController
             $assign->setDescription($row["Description"]);
             $assign->setDueTo(date("H:i d-m-Y", strtotime($row["DueTo"])));
             $assign->setFilePath($row["FilePath"]);
+            $assign->setFileName($row["FileName"]);
 
             return $assign;
         }
-        
+
         return null;
+    }
+
+    function ChangeAssignment($assignid, $filepath, $filename)
+    {
+        $sql = "UPDATE Assignments SET FilePath='{$filepath}', FileName='{$filename}' WHERE AssignmentID={$assignid}";
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    function DeleteAssignment($assignid){
+        $sql = "DELETE FROM Assignments WHERE AssignmentID={$assignid}";
+
+        if ($this->link->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -56,7 +56,13 @@ $assignList = $controller->GetAllAssignments();
                                 <span class="m-0 font-weight-bold text-primary">List Assignments</span>
                             </div>
                             <div class="card-body">
-                                <a href="AddAssignment.php" class="btn btn-primary">New assignment</a><br/></br/>
+                                <?php
+                                
+                                if($_SESSION["role"] == 2){
+                                    echo "<a href='AddAssignment.php' class='btn btn-primary'>New assignment</a><br/></br/>";
+                                }
+                                
+                                ?>
                                 <ul class="list-group">
                                     <li class='list-group-item' style="background-color: #007bff;color: white;">
                                         <div class="row">
@@ -74,7 +80,7 @@ $assignList = $controller->GetAllAssignments();
                                                     <div class='col-sm-6'>{$assign->getDescription()}</div>
                                                     <div class='col-3'>
                                                         <a class='btn btn-primary' href='DetailAssignment.php?assignid={$assign->getAssignmentID()}'>Detail</a>
-                                                        <a class='btn btn-danger' href='#'>Delete</a>
+                                                        <a class='btn btn-danger delete-assignment' assignid='{$assign->getAssignmentID()}' href='#' data-toggle='modal' data-target='#deleteAssignmentModal'>Delete</a>
                                                     </div>
                                                 </div>
                                             </li>";
@@ -112,6 +118,27 @@ $assignList = $controller->GetAllAssignments();
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="../controllers/LogoutController.php">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    All submits from students will be deleted as well!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="delete-assignment-forward" class="btn btn-primary" href="#">Delete</a>
                 </div>
             </div>
         </div>

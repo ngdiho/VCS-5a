@@ -6,10 +6,15 @@ class Assignment
     private $Description;
     private $FilePath;
     private $DueTo;
+    private $FileName;
 
     function getAssignmentID()
     {
         return $this->AssignmentID;
+    }
+    function getFileName()
+    {
+        return $this->FileName;
     }
     function getDescription()
     {
@@ -39,5 +44,9 @@ class Assignment
     function setDueTo($DueTo): void
     {
         $this->DueTo = $DueTo;
+    }
+    function setFileName($FileName): void
+    {
+        $this->FileName = $FileName;
     }
 }
