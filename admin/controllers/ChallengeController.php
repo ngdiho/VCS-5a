@@ -2,6 +2,8 @@
 
 require_once '../../admin/dbconnect/dbconnection.php';
 require_once '../../admin/models/Challenge.php';
+require_once '../../public/config/routes.php';
+require_once 'HistoryController.php';
 
 class ChallengeController
 {
@@ -13,10 +15,10 @@ class ChallengeController
         $this->link = $dbconnect->InitConnect();
     }
 
-    function AddChallenge($challengename, $hint, $filepath, $filename)
+    function AddChallenge($challengename, $hint, $filepath, $filename, $folder)
     {
-        $sql = "INSERT INTO Challenges (ChallengeName, Hint, FilePath, FileName) 
-            VALUES ('{$challengename}','{$hint}', '{$filepath}', '{$filename}')";
+        $sql = "INSERT INTO Challenges (ChallengeName, Hint, FilePath, FileName, Folder) 
+            VALUES ('{$challengename}','{$hint}', '{$filepath}', '{$filename}', '{$folder}')";
 
         if ($this->link->query($sql) === TRUE) {
             return true;
@@ -59,6 +61,9 @@ class ChallengeController
         $chal->setFileName($row["FileName"]);
         $chal->setFilePath($row["FilePath"]);
 
+        $historyController = new HistoryController();
+        $chal->setHistories($historyController->LoadHistory($chalid));
+
         return $chal;
     }
 
@@ -80,12 +85,14 @@ class ChallengeController
         $rs = $this->link->query($sql);
         $row = $rs->fetch_assoc();
 
-        $filename=$row["FileName"];
+        $folder = $row["Folder"];
+        $filepath = $_SERVER['DOCUMENT_ROOT'] . ROUTE_CHALLENGE_FILE . $folder . "/";
+        $output = shell_exec('ls ' . $filepath);
+        $filename = substr($output, 0, strrpos($output, "."));
 
-        if($filename == $answer){
+        if ($filename == $answer) {
             return 1;
-        }
-        else {
+        } else {
             return 0;
         }
     }

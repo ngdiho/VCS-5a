@@ -55,8 +55,23 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">USERS</h6>
+                                <span class="text-danger">
+                                    <?php
+                                    if (!empty($_SESSION["message"])) {
+                                        echo $_SESSION["message"];
+                                        unset($_SESSION["message"]);
+                                    }
+                                    ?>
+                                </span>
                             </div>
                             <div class="card-body">
+                                <?php
+
+                                if ($_SESSION["role"] == 2) {
+                                    echo "<a class='btn btn-primary' href='#' data-toggle='modal' data-target='#addNewUser'>New</a><br><br>";
+                                }
+
+                                ?>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
@@ -93,13 +108,13 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                             } else {
                                                 foreach ($userList as $user) {
                                                     $role = $user->getRole() == 1 ? "Student" : "Teacher";
-                                                    echo "<tr>
-                                                            <td>{$user->getUserName()}</td>
-                                                            <td>{$user->getFullName()}</td>
-                                                            <td>{$user->getEmail()}</td>
-                                                            <td>{$user->getPhoneNumber()}</td>
-                                                            <td>{$role}</td>
-                                                            <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a href='EditUser.php?userid={$user->getUserID()}'>edit</a> / 
+                                                    echo "<tr userid='{$user->getUserID()}'>
+                                                            <td field='username'>{$user->getUserName()}</td>
+                                                            <td field='fullname'>{$user->getFullName()}</td>
+                                                            <td field='email'>{$user->getEmail()}</td>
+                                                            <td field='phonenumber'>{$user->getPhoneNumber()}</td>
+                                                            <td field='role'>{$role}</td>
+                                                            <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a class='edit-user' userid='{$user->getUserID()}' data-toggle='modal' data-target='#editUser' href='#'>edit</a> / 
                                                             <a class='delete-user' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
                                                         </tr>";
                                                 }
@@ -165,6 +180,98 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
         </div>
     </div>
+
+    <!-- Add New Modal-->
+    <div class="modal fade" id="addNewUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <form action="../controllers/AddUserController.php" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="fullname">Full name</label>
+                            <input name="fullname" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Email</label>
+                            <input name="email" type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Phone number</label>
+                            <input name="phonenumber" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Username</label>
+                            <input name="username" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Password</label>
+                            <input name="password" type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Repeat password</label>
+                            <input name="repeatpassword" type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input name="isteacher" class="form-check-input" type="checkbox"> Is Teacher
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Create</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <form action="../controllers/EditUserController.php" method="POST">
+                    <input name="userid" type="text" class="form-control" id="edit-userid" hidden>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="fullname">Full name</label>
+                            <input name="fullname" type="text" class="form-control" id="edit-fullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Email</label>
+                            <input name="email" type="email" class="form-control" id="edit-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Phone number</label>
+                            <input name="phonenumber" type="text" class="form-control" id="edit-phonenumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Username</label>
+                            <input name="username" type="text" class="form-control" id="edit-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">New password</label>
+                            <input name="password" type="password" class="form-control" id="edit-password" placeholder="Leave it empty if do not want to change">
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input name="isteacher" class="form-check-input" type="checkbox" id="edit-isteacher"> Is Teacher
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="../lib/jquery/jquery-3.5.1.min.js"></script>

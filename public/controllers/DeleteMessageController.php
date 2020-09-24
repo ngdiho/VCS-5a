@@ -2,8 +2,6 @@
 require_once '../../admin/controllers/MessageController.php';
 require_once "../config/routes.php";
 
-session_start();
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $messId = $_GET["messid"];
     $userId = $_GET["userid"];

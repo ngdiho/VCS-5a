@@ -105,6 +105,30 @@ $assign = $controller->GetAssignmentById($assignId);
                                                 <span style='float: right;' class='text-success'><i class='fas fa-clipboard-check'></i> Turned in </span><br><br>
                                                 <a href='#' data-toggle='modal' data-target='#changeTurnInModal' class='btn btn-primary'>Change turn-in file</a>
                                             </p>";
+
+                                        echo"<div class='modal fade' id='changeTurnInModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                        <div class='modal-dialog' role='document'>
+                                            <div class='modal-content'>
+                                                <form action='../controllers/ChangeReportController.php' method='POST' enctype='multipart/form-data'>
+                                                    <input type='text' name='reportid' value='".$report->getReportID()."' hidden/>
+                                                    <input type='text' name='assignid' value='".$assignId."' hidden/>
+                                                    <div class='modal-body'>
+                                                        <div class='form-group'>
+                                                            <label for='customFile'>New File</label>
+                                                            <div class='custom-file'>
+                                                                <input type='file' name='file' class='custom-file-input' id='customFile' required>
+                                                                <label class='custom-file-label' for='customFile'>Choose file</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='modal-footer'>
+                                                        <button class='btn btn-secondary' type='button' data-dismiss='modal'>Cancel</button>
+                                                        <button class='btn btn-primary' href='#'>Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>";
                                     } else {
                                         echo "<br/><br/>
                                         <form action='../controllers/TurnInController.php' method='POST' enctype='multipart/form-data'>
@@ -163,31 +187,6 @@ $assign = $controller->GetAssignmentById($assignId);
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="../controllers/ChangeAssignmentController.php" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden/>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="customFile">New File</label>
-                            <div class="custom-file">
-                                <input type="file" name="file" class="custom-file-input" id="customFile" required>
-                                <label class="custom-file-label" for="customFile">Choose file</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" href="#">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- change submit file Modal-->
-    <div class="modal fade" id="changeTurnInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="../controllers/ChangeReportController.php" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="reportid" value="<?php echo $report->getReportID() ?>" hidden/>
                     <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden/>
                     <div class="modal-body">
                         <div class="form-group">

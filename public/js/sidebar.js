@@ -7,9 +7,6 @@ class SideBar {
         var pathName = window.location.pathname;
         var page = pathName.substring(pathName.lastIndexOf("/") + 1);
         switch (page) {
-            case 'AddUser.php':
-                $('#sidebar-wrapper a[href="AddUser.php"]').addClass('sidebar-selected');
-                break;
             case 'Messages.php':
                 $('#sidebar-wrapper a[href="Messages.php"]').addClass('sidebar-selected');
                 break;

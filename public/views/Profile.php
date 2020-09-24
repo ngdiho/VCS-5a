@@ -61,7 +61,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             </div>
                             <div class="col">
                                 <blockquote>
-                                    <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">Gotham, United Kingdom <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                                    <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">
+                                            <?php
+
+                                            if ($rs->getRole() == 2) {
+                                                echo "Teacher";
+                                            } else {
+                                                echo "Student";
+                                            }
+
+                                            ?>
+                                            <i class="glyphicon glyphicon-map-marker"></i>
+                                        </cite></small>
                                 </blockquote>
                                 <p>
                                     <i class="fas fa-envelope-open-text"></i> <?php echo $rs->getEmail() ?>

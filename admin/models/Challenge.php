@@ -6,6 +6,17 @@ class Challenge{
     private $Hint;
     private $FilePath;
     private $FileName;
+    private $Histories;
+    
+    function getHistories()
+    {
+        return $this->Histories;
+    }
+
+    function setHistories($Histories): void
+    {
+        $this->Histories = $Histories;
+    }
 
     function getChallengeID()
     {

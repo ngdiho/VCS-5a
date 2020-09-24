@@ -74,22 +74,40 @@ $challenge = $controller->GetChallengeById($chalid);
                                             <div class='col-sm-7'>User</div>
                                             <div class='col-2'>Result</div>
                                         </div>
-                                    </li>
-                                </ul>
+                                    </li>";
+
+                            foreach ($challenge->getHistories() as $history) {
+
+                                echo "<li class='list-group-item'>
+                                        <div class='row'>
+                                            <div class='col-3'>{$history->getSubmitDate()}</div>
+                                            <div class='col-sm-7'>{$history->getStudentName()}</div>";
+
+                                if ($history->getResult() == 1) {
+                                    echo "<div class='col-2'><span class='text-success'>Correct</span></div>
+                                    </div>
+                                </li>";
+                                } else {
+                                    echo "<div class='col-2'><span class='text-danger'>Incorrect</span></div>
+                                    </div>
+                                </li>";
+                                }
+                            }
+
+                            echo "</ul>
                             </div>
                         </div>";
-                        } 
-                        else 
-                        {
-                            echo "<div class='container' style='text-align: center; width: 450px;'>
+                        } else {
+                            echo "<div class='container' style='text-align: center; width: 700px;'>
                             <h5>Challenge</h5>
-                            <h1 style='font-size: 130px;'>".$challenge->getChallengeName()."</h1>
+                            <h1 style='font-size: 55px;'>" . $challenge->getChallengeName() . "</h1>
                             <a type='text' class='btn btn-primary' href='#' data-toggle='modal' data-target='#showHint'>Show hint <i class='fas fa-lightbulb'></i></a>
-                            <hr>
-                            <form action='../controllers/AnswerController.php' method='POST'>
-                                <input type='text' name='chalid' value='".$chalid."' hidden>
+                            
+                            <form action='../controllers/AnswerController.php' method='POST' style='width:450px; margin-left: 110px'>
+                                <hr>
+                                <input type='text' name='chalid' value='" . $chalid . "' hidden>
                                 <div class='form-group'>
-                                    <input type='text' class='form-control' name='answer' placeholder='Type your answer'>
+                                    <input type='text' class='form-control' name='answer' placeholder='Type your answer' required>
                                 </div>
                                 <div class='form-group'>
                                     <button type='text' class='btn btn-primary'>Submit</button>
@@ -110,7 +128,7 @@ $challenge = $controller->GetChallengeById($chalid);
                         }
 
                         ?>
-                        
+
                     </div>
                     <!-- /.container-fluid -->
 

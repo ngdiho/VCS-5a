@@ -57,7 +57,7 @@ $messList = $controller->GetReceiveMessages($_SESSION["id"]);
                             </div>
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <li class='list-group-item' style="color: white; background-color: #438ffc">
+                                    <li class='list-group-item' style="color: white; background-color: #007bff">
                                         <div class='row'>
                                             <div class='col-3'>Time</div>
                                             <div class='col-sm-7'>Content</div>

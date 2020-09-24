@@ -68,7 +68,7 @@ $challenges = $controller->GetAllChallenge();
 
                                 ?>
                                 <ul class="list-group">
-                                    <li class='list-group-item' style="color: white; background-color: #438ffc">
+                                    <li class='list-group-item' style="color: white; background-color: #007bff">
                                         <div class='row'>
                                             <div class='col-sm-7'>Challenge name</div>
                                             <div class='col-2'>#</div>
@@ -76,8 +76,9 @@ $challenges = $controller->GetAllChallenge();
                                     </li>
                                     <?php
 
-                                    foreach ($challenges as $chal) {
-                                        echo "<li class='list-group-item'>
+                                    if ($_SESSION["role"] == 2){
+                                        foreach ($challenges as $chal) {
+                                            echo "<li class='list-group-item'>
                                                 <div class='row'>
                                                     <div class='col-sm-7'>{$chal->getChallengeName()}</div>
                                                     <div class='col-2'>
@@ -86,6 +87,19 @@ $challenges = $controller->GetAllChallenge();
                                                     </div>
                                                 </div>
                                             </li>";
+                                        }
+                                    }
+                                    else {
+                                        foreach ($challenges as $chal) {
+                                            echo "<li class='list-group-item'>
+                                                <div class='row'>
+                                                    <div class='col-sm-7'>{$chal->getChallengeName()}</div>
+                                                    <div class='col-2'>
+                                                        <a class='btn btn-primary' href='DetailChallenge.php?chalid={$chal->getChallengeID()}'>Detail</a>
+                                                    </div>
+                                                </div>
+                                            </li>";
+                                        }
                                     }
 
                                     ?>

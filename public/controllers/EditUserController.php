@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = trim($_POST["fullname"]);
     $phonenumber = trim($_POST["phonenumber"]);
     $email = trim($_POST["email"]);
-    $role = isset($_POST['isteacher']) && $_POST['isteacher']  ? 2 : 1;
+    $role = isset($_POST['isteacher']) && $_POST['isteacher'] ? 2 : 1;
 
     $user = new User();
     $user->setUserID($userid);
@@ -34,6 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION["message"] = UPDATE_USER_FAILED;
 
-        header("location: ".ROUTE_EDIT_USER."?userid={$userid}");
+        header("location: ".ROUTE_HOME."?userid={$userid}");
     }
 }

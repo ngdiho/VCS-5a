@@ -73,17 +73,33 @@ $assignList = $controller->GetAllAssignments();
                                     </li>
                                     <?php
 
-                                    foreach ($assignList as $assign) {
-                                        echo "<li class='list-group-item'>
-                                                <div class='row'>
-                                                    <div class='col-3'>{$assign->getDueTo()}</div>
-                                                    <div class='col-sm-6'>{$assign->getDescription()}</div>
-                                                    <div class='col-3'>
-                                                        <a class='btn btn-primary' href='DetailAssignment.php?assignid={$assign->getAssignmentID()}'>Detail</a>
-                                                        <a class='btn btn-danger delete-assignment' assignid='{$assign->getAssignmentID()}' href='#' data-toggle='modal' data-target='#deleteAssignmentModal'>Delete</a>
+                                    if($_SESSION["role"] == 2){
+                                        foreach ($assignList as $assign) {
+                                            echo "<li class='list-group-item'>
+                                                    <div class='row'>
+                                                        <div class='col-3'>{$assign->getDueTo()}</div>
+                                                        <div class='col-sm-6'>{$assign->getDescription()}</div>
+                                                        <div class='col-3'>
+                                                            <a class='btn btn-primary' href='DetailAssignment.php?assignid={$assign->getAssignmentID()}'>Detail</a>
+                                                            <a class='btn btn-danger delete-assignment' assignid='{$assign->getAssignmentID()}' href='#' data-toggle='modal' data-target='#deleteAssignmentModal'>Delete</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </li>";
+                                                </li>";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach ($assignList as $assign) {
+                                            echo "<li class='list-group-item'>
+                                                    <div class='row'>
+                                                        <div class='col-3'>{$assign->getDueTo()}</div>
+                                                        <div class='col-sm-6'>{$assign->getDescription()}</div>
+                                                        <div class='col-3'>
+                                                            <a class='btn btn-primary' href='DetailAssignment.php?assignid={$assign->getAssignmentID()}'>Detail</a>
+                                                        </div>
+                                                    </div>
+                                                </li>";
+                                        }
                                     }
 
                                     ?>

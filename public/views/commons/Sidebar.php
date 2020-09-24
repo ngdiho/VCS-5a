@@ -8,9 +8,6 @@
         <a href="Home.php" class="list-group-item list-group-item-action">
             <div class="sidebar-icon"><i class="fas fa-list"></i></div> Users
         </a>
-        <a href="AddUser.php" class="list-group-item list-group-item-action">
-            <div class="sidebar-icon"><i class="fas fa-id-card"></i></div></i> Add new user
-        </a>
         <a href="Messages.php" class="list-group-item list-group-item-action">
             <div class="sidebar-icon"><i class="fas fa-sms"></i></div> Messages
         </a>
