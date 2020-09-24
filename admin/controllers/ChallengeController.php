@@ -95,5 +95,21 @@ class ChallengeController
         } else {
             return 0;
         }
+
+        // $sql = "SELECT * FROM Challenges WHERE ChallengeID=" . $chalid;
+
+        // $rs = $this->link->query($sql);
+        // $row = $rs->fetch_assoc();
+
+        // $folder = $row["Folder"];
+        // $filepath = $_SERVER['DOCUMENT_ROOT'] . ROUTE_CHALLENGE_FILE . $folder . "/";
+        // $output = scandir($filepath);
+        // $filename = substr($output[2], 0, strrpos($output[2], "."));
+
+        // if ($filename == $answer) {
+        //     return 1;
+        // } else {
+        //     return 0;
+        // }
     }
 }

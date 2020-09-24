@@ -6,7 +6,6 @@ require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
 ?>
 <?php
-
 $username = $password = "";
 $username_err = $password_err = "";
 
