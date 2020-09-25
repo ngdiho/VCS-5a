@@ -1,9 +1,14 @@
 <?php
+session_start();
 
 require_once '../../admin/controllers/AssignmentController.php';
 require_once '../../admin/models/Assignment.php';
+require_once "../config/routes.php";
 
-session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
 
 $assignId = $_GET["assignid"];
 
@@ -56,7 +61,7 @@ $assign = $controller->GetAssignmentById($assignId);
                     <div class="container">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">Assignment [ <?php echo $assign->getDescription() ?> ]</span>
+                                <h6 class="m-0 font-weight-bold">Assignment [ <?php echo $assign->getDescription() ?> ]</h6>
                             </div>
                             <div class="card-body">
                                 <span>File: <?php echo "<a href='" . $assign->getFilePath() . "' download='" . $assign->getFileName() . "'>" . $assign->getFileName() . "</a>" ?></span>
@@ -73,7 +78,7 @@ $assign = $controller->GetAssignmentById($assignId);
                                             <a href='#' data-toggle='modal' data-target='#changeFileModal' class='btn btn-primary'>Change file</a><br /></br />
                                         </div>
                                         <ul class='list-group'>
-                                            <li class='list-group-item' style='background-color: #007bff;color: white;'>
+                                            <li class='list-group-item' style='background-color: #4e73df;color: white;'>
                                                 <div class='row'>
                                                     <div class='col-3'>Time submit</div>
                                                     <div class='col-sm-6'>File</div>
@@ -81,14 +86,20 @@ $assign = $controller->GetAssignmentById($assignId);
                                                 </div>
                                             </li>";
 
-                                    foreach ($list as $rp) {
+                                    if (sizeof($list) == 0) {
                                         echo "<li class='list-group-item'>
-                                            <div class='row'>
-                                                <div class='col-3'>{$rp->getCreateDate()}</div>
-                                                <div class='col-sm-6'><a href='{$rp->getFilePath()}' download>{$rp->getFileName()}</a></div>
-                                                <div class='col-3'>{$rp->getStudentName()}</div>
-                                            </div>
-                                        </li>";
+                                                        No submit now
+                                                    </li>";
+                                    } else {
+                                        foreach ($list as $rp) {
+                                            echo "<li class='list-group-item'>
+                                                <div class='row'>
+                                                    <div class='col-3'>{$rp->getCreateDate()}</div>
+                                                    <div class='col-sm-6'><a href='{$rp->getFilePath()}' download>{$rp->getFileName()}</a></div>
+                                                    <div class='col-3'>{$rp->getStudentName()}</div>
+                                                </div>
+                                            </li>";
+                                        }
                                     }
 
                                     echo "</ul>";
@@ -106,12 +117,12 @@ $assign = $controller->GetAssignmentById($assignId);
                                                 <a href='#' data-toggle='modal' data-target='#changeTurnInModal' class='btn btn-primary'>Change turn-in file</a>
                                             </p>";
 
-                                        echo"<div class='modal fade' id='changeTurnInModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                        echo "<div class='modal fade' id='changeTurnInModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                                         <div class='modal-dialog' role='document'>
                                             <div class='modal-content'>
                                                 <form action='../controllers/ChangeReportController.php' method='POST' enctype='multipart/form-data'>
-                                                    <input type='text' name='reportid' value='".$report->getReportID()."' hidden/>
-                                                    <input type='text' name='assignid' value='".$assignId."' hidden/>
+                                                    <input type='text' name='reportid' value='" . $report->getReportID() . "' hidden/>
+                                                    <input type='text' name='assignid' value='" . $assignId . "' hidden/>
                                                     <div class='modal-body'>
                                                         <div class='form-group'>
                                                             <label for='customFile'>New File</label>
@@ -187,7 +198,7 @@ $assign = $controller->GetAssignmentById($assignId);
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="../controllers/ChangeAssignmentController.php" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden/>
+                    <input type="text" name="assignid" value="<?php echo $assignId ?>" hidden />
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="customFile">New File</label>

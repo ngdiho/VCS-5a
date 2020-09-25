@@ -4,6 +4,7 @@ require_once '../../admin/dbconnect/dbconnection.php';
 require_once '../../admin/models/Challenge.php';
 require_once '../../public/config/routes.php';
 require_once 'HistoryController.php';
+require_once '../../admin/utilities/FolderUtility.php';
 
 class ChallengeController
 {
@@ -15,10 +16,10 @@ class ChallengeController
         $this->link = $dbconnect->InitConnect();
     }
 
-    function AddChallenge($challengename, $hint, $filepath, $filename, $folder)
+    function AddChallenge($challengename, $hint, $folder)
     {
-        $sql = "INSERT INTO Challenges (ChallengeName, Hint, FilePath, FileName, Folder) 
-            VALUES ('{$challengename}','{$hint}', '{$filepath}', '{$filename}', '{$folder}')";
+        $sql = "INSERT INTO Challenges (ChallengeName, Hint,  Folder) 
+            VALUES ('{$challengename}','{$hint}', '{$folder}')";
 
         if ($this->link->query($sql) === TRUE) {
             return true;
@@ -58,8 +59,16 @@ class ChallengeController
         $chal->setChallengeID($row["ChallengeID"]);
         $chal->setChallengeName($row["ChallengeName"]);
         $chal->setHint($row["Hint"]);
-        $chal->setFileName($row["FileName"]);
-        $chal->setFilePath($row["FilePath"]);
+        $chal->setFolder($row["Folder"]);
+
+        $folder = $row["Folder"];
+        $filepath = $_SERVER['DOCUMENT_ROOT'] . ROUTE_CHALLENGE_FILE . $folder . "/";
+        $output = shell_exec('ls ' . $filepath);
+        $filename = substr($output, 0, strrpos($output, "."));
+        $filepath = ROUTE_CHALLENGE_FILE . $folder . "/" . trim($output);
+
+        $chal->setFilePath($filepath);
+        $chal->setFileName($filename);
 
         $historyController = new HistoryController();
         $chal->setHistories($historyController->LoadHistory($chalid));
@@ -69,6 +78,11 @@ class ChallengeController
 
     function DeleteChallenge($chalid)
     {
+        $chal = $this->GetChallengeById($chalid);
+        $folder = $chal->getFolder();
+        $folderPath = $_SERVER['DOCUMENT_ROOT'] . ROUTE_CHALLENGE_FILE . $folder . "/";
+        FolderUtility::DeleteDir($folderPath);
+
         $sql = "DELETE FROM Challenges WHERE ChallengeID=" . $chalid;
 
         if ($this->link->query($sql) === TRUE) {

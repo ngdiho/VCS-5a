@@ -149,6 +149,34 @@ class UserController
         }
     }
 
+    // Get User
+    function GetUserByUserName($username)
+    {
+        $sql = "SELECT * FROM Users WHERE UserName='{$username}'";
+
+        if ($stmt = mysqli_prepare($this->link, $sql)) {
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                // Store result
+                mysqli_stmt_store_result($stmt);
+
+                // Check if username exists, if yes then verify password
+                if (mysqli_stmt_num_rows($stmt) == 1) {
+                    // Bind result variables
+                    return 1;
+                } else {
+                    mysqli_stmt_close($stmt);
+                    return 0;
+                }
+            } else {
+                mysqli_stmt_close($stmt);
+                return 0;
+            }
+        }
+
+        return 0;
+    }
+
     // Update user
     function UpdateUser(User $user)
     {

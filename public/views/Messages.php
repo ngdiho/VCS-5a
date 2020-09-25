@@ -1,9 +1,15 @@
 <?php
+session_start();
 
 require_once '../../admin/controllers/MessageController.php';
 require_once '../../admin/models/Message.php';
+require_once "../config/routes.php";
 
-session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
+
 
 $controller = new MessageController();
 $messList = $controller->GetReceiveMessages($_SESSION["id"]);
@@ -50,14 +56,14 @@ $messList = $controller->GetReceiveMessages($_SESSION["id"]);
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
-                    <div class="container">
+                    <div class="container" style="width: 70%; padding: 15px;">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">Received messages</span>
+                                <h6 class="m-0 font-weight-bold">Received messages</h6>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <li class='list-group-item' style="color: white; background-color: #007bff">
+                                    <li class='list-group-item' style="color: white; background-color: #4e73df">
                                         <div class='row'>
                                             <div class='col-3'>Time</div>
                                             <div class='col-sm-7'>Content</div>
@@ -65,15 +71,21 @@ $messList = $controller->GetReceiveMessages($_SESSION["id"]);
                                         </div>
                                     </li>
                                     <?php
-
-                                    foreach ($messList as $mess) {
+                                    
+                                    if (sizeof($messList) == 0) {
                                         echo "<li class='list-group-item'>
-                                                <div class='row'>
-                                                    <div class='col-3'>{$mess->getCreateDate()}</div>
-                                                    <div class='col-sm-7'>{$mess->getContent()}</div>
-                                                    <div class='col-2'>{$mess->getSendName()}</div>
-                                                </div>
+                                                No received message now
                                             </li>";
+                                    } else {
+                                        foreach ($messList as $mess) {
+                                            echo "<li class='list-group-item'>
+                                                    <div class='row'>
+                                                        <div class='col-3'>{$mess->getCreateDate()}</div>
+                                                        <div class='col-sm-7'>{$mess->getContent()}</div>
+                                                        <div class='col-2'>{$mess->getSendName()}</div>
+                                                    </div>
+                                                </li>";
+                                        }
                                     }
 
                                     ?>

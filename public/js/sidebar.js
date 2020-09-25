@@ -13,7 +13,13 @@ class SideBar {
             case 'Assignments.php':
                 $('#sidebar-wrapper a[href="Assignments.php"]').addClass('sidebar-selected');
                 break;
+            case 'DetailAssignment.php':
+                $('#sidebar-wrapper a[href="Assignments.php"]').addClass('sidebar-selected');
+                break;
             case 'Challenge.php':
+                $('#sidebar-wrapper a[href="Challenge.php"]').addClass('sidebar-selected');
+                break;
+            case 'DetailChallenge.php':
                 $('#sidebar-wrapper a[href="Challenge.php"]').addClass('sidebar-selected');
                 break;
             default:

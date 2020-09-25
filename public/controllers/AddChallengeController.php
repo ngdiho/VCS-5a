@@ -14,9 +14,6 @@ if ($_SESSION["role"] == 1) {
     $filePath = $folder . "/" . basename($_FILES["file"]["name"]);
     $target_file = $target_dir . $filePath;
 
-    $filePath = ROUTE_CHALLENGE_FILE . $filePath;
-    $fileName = basename($_FILES["file"]["name"]);
-
     $uploadOk = 1;
 
     // Check if file already exists
@@ -35,7 +32,7 @@ if ($_SESSION["role"] == 1) {
             $hint = trim($_POST["hint"]);
 
             $challengeController = new ChallengeController();
-            $rs = $challengeController->AddChallenge($challengename, $hint, $filePath, $fileName, $folder);
+            $rs = $challengeController->AddChallenge($challengename, $hint, $folder);
 
             if ($rs) {
                 header("location: " . ROUTE_CHALLENGE);

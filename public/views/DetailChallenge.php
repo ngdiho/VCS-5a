@@ -1,9 +1,14 @@
 <?php
+session_start();
 
 require_once '../../admin/controllers/ChallengeController.php';
 require_once '../../admin/models/Challenge.php';
+require_once "../config/routes.php";
 
-session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
 
 $chalid = trim($_GET['chalid']);
 
@@ -60,7 +65,7 @@ $challenge = $controller->GetChallengeById($chalid);
                         if ($_SESSION["role"] == 2) {
                             echo "<div class='card shadow mb-4'>
                             <div class='card-header py-3'>
-                                <h6 class='m-0 font-weight-bold text-primary'>CHALLENGE [ " . $challenge->getChallengeName() . " ]</h6>
+                                <h6 class='m-0 font-weight-bold'>CHALLENGE [ " . $challenge->getChallengeName() . " ]</h6>
 
                             </div>
                             <div class='card-body'>
@@ -68,10 +73,10 @@ $challenge = $controller->GetChallengeById($chalid);
                                 <p>" . $challenge->getHint() . "</p>
                                 <h4>All submits</h4>
                                 <ul class='list-group'>
-                                    <li class='list-group-item' style='color: white; background-color: #438ffc'>
+                                    <li class='list-group-item' style='color: white; background-color: #4e73df'>
                                         <div class='row'>
                                             <div class='col-3'>Time</div>
-                                            <div class='col-sm-7'>User</div>
+                                            <div class='col-sm-7'>Student</div>
                                             <div class='col-2'>Result</div>
                                         </div>
                                     </li>";
@@ -115,16 +120,34 @@ $challenge = $controller->GetChallengeById($chalid);
                             </form>";
 
                             if (!empty($_SESSION["correct"])) {
+
                                 if ($_SESSION["correct"] == "true") {
                                     echo "<p class='text-success'>Congratulation, correct answer !</p>";
-                                    echo "<a href='{$challenge->getFilePath()}' download='{$challenge->getFileName()}'>{$challenge->getFileName()}</a>";
+                                    echo "</div>";
+                                    echo "<div class='container' style='width:75%'>
+                                            <div class='card shadow mb-4'>
+                                            <div class='card-header py-3'>
+                                                <h6 class='m-0 font-weight-bold text-primary'>Your reward</h6>
+                                            </div>
+                                                <div class='card-body'>";
+                                    
+                                    $filePath = $_SERVER['DOCUMENT_ROOT'] . $challenge->getFilePath();
+                                    $file = fopen($filePath, "r");
+
+                                    while(!feof($file)){
+                                        echo fgets($file). "<br/>";
+                                    }
+
+                                    fclose($file);
+
+                                    echo    "</div></div></div>";
                                 } else {
                                     echo "<p class='text-danger'>Incorrect answer !</p>";
                                 }
+
+
                                 unset($_SESSION["correct"]);
                             }
-
-                            echo "</div>";
                         }
 
                         ?>

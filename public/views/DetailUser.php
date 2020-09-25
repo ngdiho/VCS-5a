@@ -1,11 +1,17 @@
 <?php
+session_start();
 
 require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
 require_once '../../admin/controllers/MessageController.php';
 require_once '../../admin/models/Message.php';
+require_once "../config/routes.php";
 
-session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $userId = $_GET["userid"];
     $controller = new UserController();
@@ -82,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </p>
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <span class="m-0 font-weight-bold text-primary">Send message</span>
+                                        <h6 class="m-0 font-weight-bold">Send message</h6>
                                         <span class="text-success">
                                             <?php
                                             if (!empty($_SESSION["message"])) {
@@ -96,10 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <form action="../controllers/SendMessageController.php" method="POST">
                                             <input type="text" name="receiveid" hidden value="<?php echo $rs->getUserID() ?>" />
                                             <div class="col">
-                                                <textarea name="message"></textarea>
+                                                <textarea name="message" required></textarea>
                                             </div>
                                             <div class="col">
-                                                <button style="float: right;" class="btn btn-primary" type="submit">Send</button>
+                                                <button style="float: right;" class="btn btn-primary" type="submit">Send <i class="fas fa-paper-plane"></i></button>
                                             </div>
                                         </form>
                                     </div>
@@ -110,11 +116,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="container">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">Messages sent to <?php echo $rs->getFullName() ?></span>
+                                <h6 class="m-0 font-weight-bold">Messages sent to <?php echo $rs->getFullName() ?></h6>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <li class='list-group-item' style="color: white; background-color: #007bff">
+                                    <li class='list-group-item' style="color: white; background-color: #4e73df">
                                         <div class='row'>
                                             <div class='col-3'>Time</div>
                                             <div class='col-sm-7'>Content</div>
@@ -125,17 +131,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                                     $messController = new MessageController();
                                     $messList = $messController->GetSentMessages($_SESSION["id"], $rs->getUserID());
-                                    foreach ($messList as $mess) {
+
+                                    if (sizeof($messList) == 0) {
                                         echo "<li class='list-group-item'>
-                                                <div class='row'>
-                                                    <div class='col-3'>{$mess->getCreateDate()}</div>
-                                                    <div messid='{$mess->getMessageID()}' class='col-sm-7'>{$mess->getContent()}</div>
-                                                    <div class='col-2'>
-                                                        <a messid='{$mess->getMessageID()}' userid='{$userId}' data-toggle='modal' data-target='#deleteMessModal' href='#' class='btn btn-danger delete-mess'><i class='fas fa-trash-alt'></i></a>
-                                                        <a class='btn btn-primary edit-mess' messid='{$mess->getMessageID()}' content='{$mess->getContent()}' data-toggle='modal' data-target='#editMessModal' href='#'><i class='fas fa-pencil-alt'></i></a>
-                                                    </div>
-                                                </div>
+                                                No message sent
                                             </li>";
+                                    } else {
+                                        foreach ($messList as $mess) {
+                                            echo "<li class='list-group-item'>
+                                                    <div class='row'>
+                                                        <div class='col-3'>{$mess->getCreateDate()}</div>
+                                                        <div messid='{$mess->getMessageID()}' class='col-sm-7'>{$mess->getContent()}</div>
+                                                        <div class='col-2'>
+                                                            <a messid='{$mess->getMessageID()}' userid='{$userId}' data-toggle='modal' data-target='#deleteMessModal' href='#' class='btn btn-danger delete-mess'><i class='fas fa-trash-alt'></i></a>
+                                                            <a class='btn btn-primary edit-mess' messid='{$mess->getMessageID()}' content='{$mess->getContent()}' data-toggle='modal' data-target='#editMessModal' href='#'><i class='fas fa-pencil-alt'></i></a>
+                                                        </div>
+                                                    </div>
+                                                </li>";
+                                        }
                                     }
 
                                     ?>

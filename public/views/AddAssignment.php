@@ -1,7 +1,13 @@
 <?php
-require_once '../config/routes.php';
-
 session_start();
+
+require_once '../config/routes.php';
+require_once "../config/routes.php";
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
 
 if ($_SESSION["role"] == 1) {
     header("location: " . ROUTE_ACCESSDENIED);
@@ -54,7 +60,7 @@ if ($_SESSION["role"] == 1) {
                     <div class="container">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">New assignment</span>
+                                <h6 class="m-0 font-weight-bold">New assignment</h6>
                             </div>
                             <div class="card-body">
                                 <form action="../controllers/AddAssignmentController.php" method="POST" enctype="multipart/form-data">

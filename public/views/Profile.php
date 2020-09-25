@@ -1,9 +1,14 @@
 <?php
+session_start();
 
 require_once '../../admin/controllers/UserController.php';
 require_once '../../admin/models/User.php';
+require_once "../config/routes.php";
 
-session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: " . ROUTE_LOGIN);
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $userId = $_SESSION["id"];
@@ -55,32 +60,40 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                     <!-- Begin Page Content -->
                     <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <img style="width: 100%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <span class="m-0 font-weight-bold">Profile</span>
                             </div>
-                            <div class="col">
-                                <blockquote>
-                                    <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">
-                                            <?php
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <img style="width: 100%;" src="../assets/images/user_icon.png" alt="" class="img-rounded img-responsive" />
+                                    </div>
+                                    <div class="col">
+                                        <blockquote>
+                                            <h1><?php echo $rs->getFullName() ?></h1> <small><cite title="Source Title">
+                                                    <?php
 
-                                            if ($rs->getRole() == 2) {
-                                                echo "Teacher";
-                                            } else {
-                                                echo "Student";
-                                            }
+                                                    if ($rs->getRole() == 2) {
+                                                        echo "Teacher";
+                                                    } else {
+                                                        echo "Student";
+                                                    }
 
-                                            ?>
-                                            <i class="glyphicon glyphicon-map-marker"></i>
-                                        </cite></small>
-                                </blockquote>
-                                <p>
-                                    <i class="fas fa-envelope-open-text"></i> <?php echo $rs->getEmail() ?>
-                                    <br /> <i class="fas fa-phone-square"></i> <?php echo $rs->getPhoneNumber() ?>
-                                </p>
-                                <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target="#changeProfileModal">Change profile</a>
+                                                    ?>
+                                                    <i class="glyphicon glyphicon-map-marker"></i>
+                                                </cite></small>
+                                        </blockquote>
+                                        <p>
+                                            <i class="fas fa-envelope-open-text"></i> <?php echo $rs->getEmail() ?>
+                                            <br /> <i class="fas fa-phone-square"></i> <?php echo $rs->getPhoneNumber() ?>
+                                        </p>
+                                        <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target="#changeProfileModal">Change profile</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <!-- /.container-fluid -->
 

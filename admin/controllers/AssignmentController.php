@@ -2,6 +2,8 @@
 
 require_once '../../admin/dbconnect/dbconnection.php';
 require_once '../../admin/models/Assignment.php';
+require_once '../../admin/utilities/FolderUtility.php';
+require_once 'ReportController.php';
 
 class AssignmentController
 {
@@ -78,8 +80,19 @@ class AssignmentController
             return false;
         }
     }
-    
-    function DeleteAssignment($assignid){
+
+    function DeleteAssignment($assignid)
+    {
+        $reportController = new ReportController();
+        $reports = $reportController->GetAllReports($assignid);
+        foreach($reports as $rp){
+            unlink($_SERVER['DOCUMENT_ROOT'] . $rp->getFilePath());
+        }
+
+        $assign = $this->GetAssignmentById($assignid);
+        $filepath = $_SERVER['DOCUMENT_ROOT'] . $assign->getFilePath();
+        unlink($filepath);
+
         $sql = "DELETE FROM Assignments WHERE AssignmentID={$assignid}";
 
         if ($this->link->query($sql) === TRUE) {

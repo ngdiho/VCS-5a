@@ -54,7 +54,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">USERS</h6>
+                                <h6 class="m-0 font-weight-bold">Users</h6>
                                 <span class="text-danger">
                                     <?php
                                     if (!empty($_SESSION["message"])) {
@@ -68,7 +68,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                 <?php
 
                                 if ($_SESSION["role"] == 2) {
-                                    echo "<a class='btn btn-primary' href='#' data-toggle='modal' data-target='#addNewUser'>New</a><br><br>";
+                                    echo "<a class='btn btn-primary' href='#' data-toggle='modal' data-target='#addNewUser'>New &nbsp<i class='far fa-plus-square'></i></a><br><br>";
                                 }
 
                                 ?>
@@ -102,7 +102,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                             <td>{$user->getEmail()}</td>
                                                             <td>{$user->getPhoneNumber()}</td>
                                                             <td>{$role}</td>
-                                                            <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a></td>
+                                                            <td><a class='btn btn-success' href='DetailUser.php?userid={$user->getUserID()}'>detail</a></td>
                                                         </tr>";
                                                 }
                                             } else {
@@ -114,8 +114,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                             <td field='email'>{$user->getEmail()}</td>
                                                             <td field='phonenumber'>{$user->getPhoneNumber()}</td>
                                                             <td field='role'>{$role}</td>
-                                                            <td><a href='DetailUser.php?userid={$user->getUserID()}'>detail</a> / <a class='edit-user' userid='{$user->getUserID()}' data-toggle='modal' data-target='#editUser' href='#'>edit</a> / 
-                                                            <a class='delete-user' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
+                                                            <td>
+                                                                <a class='btn btn-success' href='DetailUser.php?userid={$user->getUserID()}'>detail</a>&nbsp
+                                                                <a class='edit-user btn btn-primary' userid='{$user->getUserID()}' data-toggle='modal' data-target='#editUser' href='#'>edit</a>&nbsp
+                                                                <a class='delete-user btn btn-danger' fullname='{$user->getFullName()}' userid='{$user->getUserID()}' data-toggle='modal' data-target='#deleteModal' href='#'>delete</a>
+                                                            </td>        
                                                         </tr>";
                                                 }
                                             }

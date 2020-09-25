@@ -4,10 +4,20 @@ class Challenge{
     private $ChallengeID;
     private $ChallengeName;
     private $Hint;
+    private $Folder;
     private $FilePath;
     private $FileName;
     private $Histories;
     
+    function getFolder()
+    {
+        return $this->Folder;
+    }
+
+    function setFolder($Folder): void
+    {
+        $this->Folder = $Folder;
+    }
     function getHistories()
     {
         return $this->Histories;
