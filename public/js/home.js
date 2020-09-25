@@ -29,7 +29,7 @@ class Home {
         var fullname=$('tr[userid="'+userid+'"] td[field="fullname"]').html();
         var phonenumber=$('tr[userid="'+userid+'"] td[field="phonenumber"]').html();
         var email=$('tr[userid="'+userid+'"] td[field="email"]').html();
-        var role=$('tr[userid="'+userid+'"] td[field="role"]').html() === "Student" ? false : true;
+        var role=$('tr[userid="'+userid+'"] td[field="role"]').html() == "Student" ? false : true;
 
         $('#edit-fullname').val(fullname);
         $('#edit-userid').val(userid);
@@ -37,7 +37,10 @@ class Home {
         $('#edit-phonenumber').val(phonenumber);
         $('#edit-email').val(email);
         if(role){
-            $('#edit-isteacher').attr('checked','');
+            $('#edit-isteacher').prop('checked',true);
+        }
+        else{
+            $('#edit-isteacher').prop('checked',false);
         }
     }
 }

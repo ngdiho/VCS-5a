@@ -16,6 +16,7 @@ if ($_SESSION["role"] == 1) {
         if ($rs) {
             header("location: " . ROUTE_HOME);
         } else {
+            echo $userId;
         }
     }
 }

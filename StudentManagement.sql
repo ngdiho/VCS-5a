@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 25, 2020 at 04:37 PM
+-- Generation Time: Sep 25, 2020 at 07:20 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -89,15 +89,8 @@ CREATE TABLE `Messages` (
 --
 
 INSERT INTO `Messages` (`MessageID`, `Content`, `CreateDate`, `SendID`, `ReceiveID`, `Seen`) VALUES
-(6, 'asasdasdad', '2020-09-18 10:37:30', 13, 13, 0),
-(11, 'oc cho Dan le hihihi', '2020-09-19 11:39:09', 12, 13, 0),
-(14, 'hihihihihihih dep trai tai lang', '2020-09-20 17:51:05', 13, 12, 0),
-(15, 'aaaaaa', '2020-09-20 19:21:37', 13, 12, 0),
-(17, 'xxxcxzxczczxczxc', '2020-09-21 11:57:02', 13, 12, 0),
-(18, 'chao Dan', '2020-09-22 05:16:55', 12, 13, 0),
 (19, 'asasdasd', '2020-09-24 04:19:23', 12, 12, 0),
 (20, 'zxczxc', '2020-09-24 04:19:28', 12, 12, 0),
-(21, 'ha ha chao Dan', '2020-09-24 13:45:45', 14, 13, 0),
 (23, 'asdasdasd', '2020-09-25 12:57:59', 14, 14, 0);
 
 -- --------------------------------------------------------
@@ -156,8 +149,8 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`UserID`, `UserName`, `Password`, `FullName`, `PhoneNumber`, `Email`, `Role`) VALUES
 (12, 'hoangnd', '$2y$10$0tOMb/ODC6t/uqRRVTnuZO6AUh0wrsj9ShEBwoMO6Bs4I8GkNn9S2', 'Hoang Nguyen', '0946164298', 'hoangt2k24@gmail.com', 1),
-(13, 'danle123', '$2y$10$bmpXYq6tB9wQxje3Scf7te8whuPyIDK9vRuwGhBlXeHH5VTSa6gGq', 'Dan Le', '0012312334234', 'danle12334345345@gmail.com', 2),
-(14, 'hale123', '$2y$10$KTTPox5EDj/ZtaAXN3lHsubsC02rsjTeHTWKjMGdyHp5mGhIyCuM2', 'Ha Le', '0392348520911111', 'hale123123123@123', 2);
+(14, 'hale123', '$2y$10$KTTPox5EDj/ZtaAXN3lHsubsC02rsjTeHTWKjMGdyHp5mGhIyCuM2', 'Ha Le', '0392348520911111', 'hale123123123@123', 2),
+(18, 'quangle', '$2y$10$pfjkVfQVuvmU2rek/eOqm.zaY/B/SGfO1e5GqUeZJ1Jklz56u1lqW', 'Quang Lê', '0891231242', 'quangle@facebook.com', 1);
 
 --
 -- Indexes for dumped tables
@@ -196,8 +189,8 @@ ALTER TABLE `Messages`
 --
 ALTER TABLE `Reports`
   ADD PRIMARY KEY (`ReportID`),
-  ADD KEY `STUDENTID_FK` (`StudentID`),
-  ADD KEY `ASSIGNMENTID_FK` (`AssignmentID`);
+  ADD KEY `ASSIGNMENTID_FK` (`AssignmentID`),
+  ADD KEY `STUDENTID_FK` (`StudentID`);
 
 --
 -- Indexes for table `Roles`
@@ -257,7 +250,7 @@ ALTER TABLE `Roles`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -274,21 +267,21 @@ ALTER TABLE `Histories`
 -- Constraints for table `Messages`
 --
 ALTER TABLE `Messages`
-  ADD CONSTRAINT `RECEIVEID_FK` FOREIGN KEY (`ReceiveID`) REFERENCES `Users` (`UserID`),
-  ADD CONSTRAINT `SENDID_FK` FOREIGN KEY (`SendID`) REFERENCES `Users` (`UserID`);
+  ADD CONSTRAINT `RECEIVEID_FK` FOREIGN KEY (`ReceiveID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `SENDID_FK` FOREIGN KEY (`SendID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `Reports`
 --
 ALTER TABLE `Reports`
   ADD CONSTRAINT `ASSIGNMENTID_FK` FOREIGN KEY (`AssignmentID`) REFERENCES `Assignments` (`AssignmentID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `STUDENTID_FK` FOREIGN KEY (`StudentID`) REFERENCES `Users` (`UserID`);
+  ADD CONSTRAINT `STUDENTID_FK` FOREIGN KEY (`StudentID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `Users`
 --
 ALTER TABLE `Users`
-  ADD CONSTRAINT `ROLE_FK` FOREIGN KEY (`Role`) REFERENCES `Roles` (`RoleID`);
+  ADD CONSTRAINT `ROLE_FK` FOREIGN KEY (`Role`) REFERENCES `Roles` (`RoleID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
