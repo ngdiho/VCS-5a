@@ -15,7 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // controller
     $userController = new UserController();
-    $rs = $userController->ChangeProfile($userid, password_hash($password,PASSWORD_DEFAULT), $email, $phonenumber);
+    if($password !== ""){
+	$password = password_hash($password, PASSWORD_DEFAULT);
+    } 
+
+    $rs = $userController->ChangeProfile($userid, $password, $email, $phonenumber);
 
     if ($rs) {
         header("location: ".ROUTE_PROFILE);

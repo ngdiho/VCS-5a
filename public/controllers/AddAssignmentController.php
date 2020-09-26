@@ -38,6 +38,7 @@ if ($_SESSION["role"] == 1) {
             }
         } else {
             echo "Sorry, there was an error uploading your file.";
+	    echo $target_file." ".$fileName." ".$filePath;
         }
     }
 }

@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rs = $userController->UpdateUser($user);
 
     if ($rs) {
+	$_SESSION["fullname"] = $fullname;
         header("location: ".ROUTE_HOME);
     } else {
         $_SESSION["message"] = UPDATE_USER_FAILED;

@@ -95,7 +95,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                                             if ($_SESSION["role"] == 1) {
                                                 foreach ($userList as $user) {
-                                                    $role = $user->getRole() == 1 ? "Student" : "Teacher";
+                                                    $role = $user->getRole() == 1 ? "Student" : "<span class='text-success'>Teacher</span>";
                                                     echo "<tr>
                                                             <td>{$user->getUserName()}</td>
                                                             <td>{$user->getFullName()}</td>
@@ -107,7 +107,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                                                 }
                                             } else {
                                                 foreach ($userList as $user) {
-                                                    $role = $user->getRole() == 1 ? "Student" : "Teacher";
+                                                    $role = $user->getRole() == 1 ? "Student" : "<span class='text-success'>Teacher</span>";
                                                     echo "<tr userid='{$user->getUserID()}'>
                                                             <td field='username'>{$user->getUserName()}</td>
                                                             <td field='fullname'>{$user->getFullName()}</td>

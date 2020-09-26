@@ -38,15 +38,9 @@ if (isset($_SESSION["loggedin"])) {
                     <label>User name</label>
                     <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" placeholder="Enter User Name..." required>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style='margin-bottom:45px'>
                     <label>Password</label>
                     <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Enter Password..." required>
-                </div>
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
-                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">
                     Login

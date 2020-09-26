@@ -42,7 +42,7 @@
 
 #page-content-wrapper {
   min-width: 100vw;
-  margin-left: 285px;
+  margin-left: 300px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -54,7 +54,7 @@
     margin-left: 0;
     background-color: var(--main-bg-color) !important;
     color: white;
-    width: 285px;
+    width: 300px;
   }
 
   #page-content-wrapper {
