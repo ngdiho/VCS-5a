@@ -1,11 +1,15 @@
 <?php
 session_start();
 require_once "../config/routes.php";
+include '../config/fbconfig.php';
 
 if (isset($_SESSION["loggedin"])) {
-    header("location: ".ROUTE_HOME);
+    header("location: " . ROUTE_HOME);
     exit;
 }
+
+$facebook_helper = $facebook->getRedirectLoginHelper();
+$facebook_login_url = $facebook_helper->getLoginUrl('https://classroom5a.hoangnd.com/');
 
 ?>
 
@@ -14,8 +18,10 @@ if (isset($_SESSION["loggedin"])) {
 
 <head>
     <meta charset="UTF-8">
+    <link href="../lib/fontawesome/css/all.css">
     <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../css/login.css" rel="stylesheet">
+    <script defer src="../lib/fontawesome/js/all.js"></script>
     <title>LOGIN</title>
 </head>
 
@@ -45,7 +51,18 @@ if (isset($_SESSION["loggedin"])) {
                 <button type="submit" class="btn btn-primary btn-user btn-block">
                     Login
                 </button>
+
             </form>
+            <p class="text-center" style="margin-top: 5px; margin-bottom: 5px;">or</p>
+            <?php
+
+            if (isset($facebook_login_url)) {
+                echo "<a class='btn btn-primary btn-user btn-block' href='{$facebook_login_url}'>
+                        <i style='font-size: 16px;'' class='fab fa-facebook-square'></i>&nbsp; Login with facebook
+                    </a>";
+            }
+
+            ?>
 
         </div>
 

@@ -1,11 +1,16 @@
 <?php
+
 session_start();
 require_once("../config/routes.php");
+include '../config/fbconfig.php';
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: " . ROUTE_LOGIN);
     exit;
 }
+
+echo $_SESSION["id"];
+
 ?>
 
 <!DOCTYPE html>

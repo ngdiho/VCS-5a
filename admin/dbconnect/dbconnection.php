@@ -4,8 +4,8 @@ class DBConnect {
     function InitConnect() {
         $DB_SERVER='127.0.0.1';
         $DB_USERNAME='root';
-        $DB_PASSWORD='cTSChE86a7u8';
-        $DB_NAME='StudentManagement';
+        $DB_PASSWORD='hoanguzumaki123';
+        $DB_NAME='classroom5a';
     
         $link = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
     

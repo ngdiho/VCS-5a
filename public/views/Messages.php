@@ -10,7 +10,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-
 $controller = new MessageController();
 $messList = $controller->GetReceiveMessages($_SESSION["id"]);
 
